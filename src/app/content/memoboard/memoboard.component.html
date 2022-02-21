@@ -1,0 +1,36 @@
+<div class="content-container" fxFill fxLayoutAlign="center center" >
+    <div class="board" fxLayout="column">
+        <div class="top-bar" fxLayout fxFlex="10" fxLayoutAlign=" center">
+            <button class="more" mat-icon-button  [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            
+            <mat-menu #menu="matMenu">
+                <ng-template matMenuContent let-name="name">
+                    <button mat-menu-item (click)="clear()">Clear History</button>
+                </ng-template>
+            </mat-menu>
+        </div>
+        <div fxLayout="column" fxFlex="90" fxLayoutAlign="end" style="padding: 10px;">
+            <mat-list fxLayout="column" *ngFor="let msg of messages">
+                <div class="bubble"
+                [ngClass]="{'right-bubble': msg.user === 'me', 'left-bubble': msg.user === 'he'}">
+                    <span>{{ msg.message }}</span>
+                </div>
+            </mat-list>
+            <div class="btm-bar" fxLayout fxLayoutAlign=" center" fxLayoutGap="10px">
+                <div class="input-bar" fxLayout fxLayoutGap="3px" fxLayoutAlign=" center">
+                    <mat-icon style="color:LightGrey">sentiment_satisfied</mat-icon>
+                    <input 
+                    class="input-field" 
+                    fxFlex="80" 
+                    type="text" 
+                    placeholder="Message..." 
+                    (keydown.enter)="send()" 
+                    [(ngModel)]="current_msg">
+                </div>
+                <button class="send-button" (click)="send()">Send</button>
+            </div>
+        </div>
+    </div>
+</div>

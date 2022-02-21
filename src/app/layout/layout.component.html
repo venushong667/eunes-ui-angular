@@ -1,0 +1,15 @@
+<div class="right-navbar" fxLayout="column" fxLayoutAlign=" center">
+    <app-icon-button
+    class="menu-button"
+    [icon]="'menu'">
+    </app-icon-button>
+
+    <div class="module-list" fxLayout="column" fxLayoutAlign="center center" fxFlex>
+        <mat-nav-list  *ngFor="let module of MODULES">
+            <app-icon-button 
+            [icon]="module.icon" 
+            [routerLink]="module.path">
+            </app-icon-button>
+        </mat-nav-list>
+    </div>
+</div>

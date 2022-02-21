@@ -1,0 +1,15 @@
+.right-navbar {
+    border-right: 1px solid whitesmoke;
+    background: white; 
+    width:80px; 
+    height:100%;
+}
+
+app-icon-button {
+    margin: 10px;
+}
+
+.menu-button {
+    position: absolute;
+}
+

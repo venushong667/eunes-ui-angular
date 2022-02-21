@@ -1,0 +1,25 @@
+button {
+    height: 50px;
+    width: 50px;
+    position: relative;
+    border-radius: 15px;
+    transition-duration:0.2s;
+    background-color: whitesmoke;
+    border-color: transparent;
+    color: grey;
+}
+
+button:hover {
+    background: dodgerblue;
+    color: white;
+    cursor: pointer;
+}
+
+button mat-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+}
