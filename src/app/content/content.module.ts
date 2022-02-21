@@ -1,13 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ContentRoutingModule } from './content-routing.module';
-import { ContentComponent } from './content.component';
-import { LayoutComponent } from '../layout/layout.component';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { IconButtonModule } from '@eunes/elements/icon-button';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { IconButtonModule } from '@eunes/elements/icon-button';
+
+import { LayoutComponent } from '../layout/layout.component';
+import { ContentComponent } from './content.component';
+import { ContentRoutingModule } from './content-routing.module';
 
 @NgModule({
     declarations: [

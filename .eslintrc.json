@@ -1,0 +1,68 @@
+{
+    "root": true,
+    "ignorePatterns": [
+        "projects/**/*"
+    ],
+    "plugins": ["simple-import-sort"],
+    "overrides": [
+        {
+            "files": ["*.ts", "*.tsx"],
+            "parserOptions": {
+                "project": [
+                    "tsconfig.json"
+                ],
+                "createDefaultProgram": true
+            },
+            "extends": [
+                "plugin:@angular-eslint/recommended",
+                "plugin:@angular-eslint/template/process-inline-templates"
+            ],
+            "rules": {
+                "@angular-eslint/directive-selector": [
+                    "error",
+                    {
+                        "type": "attribute",
+                        "prefix": "app",
+                        "style": "camelCase"
+                    }
+                ],
+                "@angular-eslint/component-selector": [
+                    "error",
+                    {
+                        "type": "element",
+                        "prefix": "app",
+                        "style": "kebab-case"
+                    }
+                ],
+                "@typescript-eslint/no-unused-vars": [
+                    "warn",
+                    {
+                        "args": "none"
+                    }
+                ],
+                "indent": "off",
+                "@typescript-eslint/indent": ["warn", 4],
+                "keyword-spacing": "off",
+                "@typescript-eslint/keyword-spacing": ["warn"],
+                "comma-spacing": "off",
+                "@typescript-eslint/comma-spacing": ["warn"],
+                "simple-import-sort/imports": "warn",
+                "simple-import-sort/exports": "warn"
+            }
+        },
+        {
+            "files": ["*.js", "*.jsx"],
+            "extends": [],
+            "rules": {}
+        },
+        {
+            "files": [
+                "*.html"
+            ],
+            "extends": [
+                "plugin:@angular-eslint/template/recommended"
+            ],
+            "rules": {}
+        }
+    ]
+}
