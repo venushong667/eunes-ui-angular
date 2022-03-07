@@ -1,15 +1,46 @@
-<div class="right-navbar" fxLayout="column" fxLayoutAlign=" center">
-    <app-icon-button
-    class="menu-button"
-    [icon]="'menu'">
-    </app-icon-button>
+<div class="layout-container">
+    <div class="navigation" fxLayout="column" fxLayoutGap="15px"
+    (mouseenter)="toggleButtonText(true)"
+    (mouseleave)="toggleButtonText(false)">
+        <!-- <eunes-icon-button
+        class="menu-button"
+        [icon]="'menu'">
+        </eunes-icon-button> -->
+        <div class="logo" fxLayout fxLayoutAlign=" center">
+            <img src="../../assets/public/images/logo/transparent.png" alt="logo">
+        </div>
 
-    <div class="module-list" fxLayout="column" fxLayoutAlign="center center" fxFlex>
-        <mat-nav-list  *ngFor="let module of MODULES">
-            <app-icon-button 
-            [icon]="module.icon" 
-            [routerLink]="module.path">
-            </app-icon-button>
+        <mat-divider></mat-divider>
+
+        <mat-nav-list class="module-list"
+        fxLayout="column" fxLayoutAlign="center center"
+        fxLayoutGap="10px">
+            <div class="module" *ngFor="let module of MODULES"
+            fxLayout>
+                <a fxLayout fxLayoutAlign="start center" fxLayoutGap="10px"
+                [routerLink]="module.path"
+                routerLinkActive="active"
+                [ngClass]="{'bottom': module.type === 'utility'}">
+                    <mat-icon>{{ module.icon }}</mat-icon>
+                    <span class="text" [ngClass]="{'open': showText}">{{ module.name }}</span>
+                </a>
+            </div>
+        </mat-nav-list>
+
+        <mat-nav-list class="module-list bottom"
+        fxLayout="column" fxLayoutAlign=" center"
+        fxLayoutGap="10px">
+            <div class="module" *ngFor="let utility of UTILITIES"
+            fxLayout>
+                <a fxLayout fxLayoutAlign="start center" fxLayoutGap="10px"
+                [routerLink]="utility.path"
+                routerLinkActive="active">
+                    <mat-icon>{{ utility.icon }}</mat-icon>
+                    <span class="text" [ngClass]="{'open': showText}">{{ utility.name }}</span>
+                </a>
+            </div>
         </mat-nav-list>
     </div>
+    
+    <eunes-chat></eunes-chat>
 </div>

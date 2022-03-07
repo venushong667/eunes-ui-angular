@@ -12,27 +12,53 @@ export class LayoutComponent {
         {
             name: 'Memoboard',
             icon: 'event_note',
-            path: '/memoboard'
+            path: '/memoboard',
+            type: 'service'
         },
         {
             name: 'Test_Note',
             icon: 'sticky_note_2',
-            path: '/login'
+            path: '/login',
+            type: 'service'
         },
         {
             name: 'Shopping',
             icon: 'shopping_bag',
-            path: '/shopping'
+            path: '/shopping',
+            type: 'service'
         },
         {
             name: 'Piggy Bank',
             icon: 'savings',
-            path: '/piggy'
+            path: '/piggy',
+            type: 'service'
         }
     ]
+
+    UTILITIES = [
+        {
+            name: 'Help',
+            icon: 'help',
+            path: '/help',
+            type: 'utility'
+        },
+        {
+            name: 'Settings',
+            icon: 'settings',
+            path: '/settings',
+            type: 'utility'
+        }
+    ]
+
+    showText: Boolean = false;
+
     constructor() { }
     
-    ngOnInit(): void {
+    // ngOnInit(): void {
+    // }
+
+    toggleButtonText(show: Boolean) {
+        this.showText = show;
     }
     
 }

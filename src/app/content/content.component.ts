@@ -9,7 +9,4 @@ export class ContentComponent {
 
     constructor() { }
 
-    ngOnInit(): void {
-    }
-
 }
