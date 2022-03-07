@@ -1,21 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-import { IconButtonComponent } from './icon-button.component';
+import { EunesIconButtonComponent } from './icon-button.component';
 
 @NgModule({
     declarations: [
-        IconButtonComponent
+        EunesIconButtonComponent
     ],
     imports: [
         CommonModule,
-        MatIconModule,
+        FlexLayoutModule,
         MatButtonModule,
+        MatIconModule,
     ],
     exports: [
-        IconButtonComponent
+        EunesIconButtonComponent
     ]
 })
-export class IconButtonModule { }
+export class EunesIconButtonModule { }
