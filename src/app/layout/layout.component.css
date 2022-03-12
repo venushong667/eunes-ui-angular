@@ -1,7 +1,3 @@
-:root {
-    --nav-width: 45px;
-}
-
 .layout-container {
     height: 100%;
     width: 100%;
@@ -13,7 +9,7 @@
 
 .logo img {
     height: 45px;
-    width: var(--nav-width);
+    width: 45px;
 }
 
 .navigation {
@@ -28,11 +24,15 @@
 }
 
 .navigation:hover {
-   width: 200px;
+   width: 250px;
 }
 
-.navigation:hover .module a {
-   width: 100%;
+.middle-menu {
+    padding: 0 12px;
+}
+
+.bottom-menu {
+    padding: 0 12px;
 }
 
 .module-list {
@@ -43,17 +43,12 @@
 .module {
     position: relative;
     width: 100%;
-    padding: 0 12px;
     transition: 0.5s;
 }
 
-.module eunes-icon-button {
-    width: 100%;
-}
-
 .module a {
-    height: 40px;
-    width: var(--nav-width);
+    height: 45px;
+    width: 100%;
     position: relative;
     border-radius: 10px;
     color: grey;
@@ -64,16 +59,14 @@
 }
 
 .module a.active {
-    background: dodgerblue;
+    background: lightsteelblue;
     color: white;
 }
 
 .module a:hover {
-    background: dodgerblue;
+    background: lightsteelblue;
     color: white;
     cursor: pointer;
-    transform: translateX(5px);
-    transition: transform 0.2s;
 }
 
 .module a mat-icon {
@@ -81,21 +74,21 @@
     display: block;
 }
 
-.module a span {
+.text {
+    flex: 1 1 0%;
     margin-top: 5px;
     opacity: 0;
     visibility: hidden;
     white-space: nowrap;
-    transition: opacity 0.5s;
-    transition: visiblity 0.5s;
+    transition: opacity 0.5s, visibility 0.5s;
 }
 
-.module a span.open {
+.navigation:hover .text {
     opacity: 1;
     visibility: visible;
 }
 
-.bottom {
+.bottom-menu {
     margin-top: auto;
 }
 
