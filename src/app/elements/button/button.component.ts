@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 
 @Component({
-    selector: 'app-button',
+    selector: 'eunes-button',
     templateUrl: './button.component.html',
     styleUrls: ['./button.component.css']
 })
-export class ButtonComponent implements OnInit {
+export class EunesButtonComponent {
+    @Input() icon: string = '';
+    @Input() text: string = '';
+    @Input() showText: Boolean = false;
+    @Input() background: Boolean = true;
+    @Input() hover: Boolean = false;
 
-    constructor() { }
+    type: string; //icon-button, text-button, text-icon-button
 
-    ngOnInit(): void {
+    constructor(private elementRef: ElementRef) { 
+        this.type = this.elementRef.nativeElement.getAttribute('type');
     }
-
+    
+    ngOnInit() {}
+    
 }

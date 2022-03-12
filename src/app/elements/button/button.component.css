@@ -1,0 +1,45 @@
+button {
+    height: 40px;
+    /* width: 50px; */
+    position: relative;
+    border-radius: 10px;
+    transition-duration:0.2s;
+    border-color: transparent;
+    color: grey;
+    padding: 0 10px;
+    line-height: 1;
+    transition: 0.5;
+}
+
+.background {
+    background-color: whitesmoke;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.hover:hover {
+    background-color: dodgerblue;
+    color: white;
+}
+
+button .text {
+    transition-duration: 3s;
+    margin-top: 1px;
+    margin-left: 5px;
+}
+
+button:active {
+    background-color: ghostwhite;
+    transition: 0.1s;
+}
+
+/* button mat-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+} */
