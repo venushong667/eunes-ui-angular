@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
     selector: 'eunes-button',
@@ -12,6 +12,8 @@ export class EunesButtonComponent {
     @Input() background: Boolean = true;
     @Input() hover: Boolean = false;
 
+    @Output() click: EventEmitter<Event> = new EventEmitter<Event>();
+
     type: string; //icon-button, text-button, text-icon-button
 
     constructor(private elementRef: ElementRef) { 
@@ -19,5 +21,4 @@ export class EunesButtonComponent {
     }
     
     ngOnInit() {}
-    
 }
