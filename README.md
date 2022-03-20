@@ -5,7 +5,7 @@
 
 This project is a personal project that aims to build a working assistant platform on microservices. It may include services such as kanban-like task manager, dashboard, and AI-related like conversational assistant and NLP Hub
 
-# Eunes Platform
+## Eunes-UI
 
 This repository is the front-end developed with angular to be the front-end of Eunes platform.
 
