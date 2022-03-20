@@ -1,7 +1,7 @@
-## In progressing
+# In progress
 
 
-# Eunes Platform
+## Eunes Platform
 
 This project is a personal project that aims to build a working assistant platform on microservices. It may include services such as kanban-like task manager, dashboard, and AI-related like conversational assistant and NLP Hub
 
