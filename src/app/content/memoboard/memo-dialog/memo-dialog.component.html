@@ -1,0 +1,7 @@
+<div class="container" fxLayout="column" fxLayoutGap="10px">
+    <div class="title">
+        <h2>{{ memo.name }}</h2>
+        <textarea fxFlex rows="1" (blur)="true" data-autosize="true" (keyup)="enter($event)" (click)="edit($event)" ></textarea>
+    </div>
+    <textarea data-autosize="true" (keyup)="enter($event)" (click)="edit($event)" >{{ memo.config.text }}</textarea>
+</div>

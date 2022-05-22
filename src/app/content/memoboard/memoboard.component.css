@@ -1,107 +1,123 @@
-.content-container {
-    padding: 10px;
-    background: aliceblue;
+.kanban-container {
+    height: 100%;
+    width: 100%;
 }
 
-.board {
-    height:700px;
-    width: 300px;
-    background: #3F405E;
-    border: none solid darkslateblue;
-    border-radius: 20px;
-}
-
-.bubble {
-    margin: 5px;
-    padding: 10px 15px;
-    border-radius: 20px;
-    max-width: 70%;
-}
-
-.bubble span {
-    color: white;
-}
-
-.right-bubble {
-    background: #9E82E9;
-    align-self: flex-end;
-}
-
-.left-bubble {
-    background: #47476B;
-    align-self: flex-start;
-}
-
-.top-bar {
-    border-radius: 20px 20px 0px 0px;
-    background:#484863;
+.kanban-header {
+    background-color: white;
+    width: 100%;
     padding: 10px;
 }
 
-.btm-bar {
-    padding: 5px;
-    height: 50px;
+.kanban-header .top-bar mat-icon {
+    color: gray;
 }
 
-.input-bar {
-    background: #47476B;
-    padding: 0px 10px;
-    height: 40px;
-    width: 75%;
-    border-radius: 20px;
-    border: none;
-    border-color:#9E82E9;
-    box-shadow: 0 0 1pt 1pt #9E82E9;
-}
-
-.input-field:focus {
-    /* outline:#9E82E9 solid 3px;
-    border-radius: 20px; */
+.search-field {
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
+    padding: 0 10px;
     outline: none;
 }
 
-.input-field {
-    background: transparent;
-    border: none;
-    color: white;
+.search-field:focus {
+    border: 2px solid lightgray;
 }
 
-.input-bar mat-icon:hover {
+.board-container {
+    background-color: ghostwhite;
+    padding: 30px;
+}
+
+.boards-top-bar .title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.boards-top-bar .description {
+    color: lightslategrey;
+    font-weight: 450;
+}
+
+.board {
+    width: 350px;
+    border-radius: 10px;
+}
+
+.board-header {
+    background: white;
+    border-radius: 10px;
+    height: 50px;
+    padding: 0 15px;
+}
+
+.board-header eunes-button ::ng-deep .background {
+    background: aliceblue;
+}
+
+.board-top-bar {
+    padding: 10px;
+}
+
+.memos {
+    border-radius: 10px;
+    padding: 10px;
+    /* background: rgba(211, 211, 211, 0.5); */
+}
+
+.memo {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 8px 0;
     cursor: pointer;
-    background: grey;
-    border-radius: 15px;
-    background-size: 28px;
-    background-position: center;
 }
 
-.input-bar mat-icon:active {
-    background: lightgrey;
-    transition-duration:0.2s;
+.memo-header .title {
+    font-weight: bold;
 }
 
-.more {
-    color:#9E82E9;
-    margin-left: auto;
+textarea {
+    outline: none;
+    background-color: whitesmoke;
 }
 
-.send-button {
-    width: 60px;
-    height: 30px;
-    border-radius: 20px;
-    color:white;
-    background:#9E82E9;
+eunes-button ::ng-deep .background {
+    background-color: white;
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+  
+.cdk-drag-placeholder {
+    background: lightsteelblue;
+    opacity: 0.2;
+    border: solid 1px lightslategrey;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder > * {
+    visibility: hidden;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.memo:last-child {
     border: none;
 }
 
-button:active {
-    transition-duration:0.5s;
-    background:#744ddf;
+.memos.cdk-drop-list-dragging .memo:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.clear-button {
-    justify-self: end;
-}
-
-.mat-menu-content {
-    color: #47476B !important;
+.memos.cdk-drop-list-dragging {
+    background: rgba(245, 245, 245, 0.5);
+    border: dashed 1px lightgray;
+    background-size: 120%;
 }

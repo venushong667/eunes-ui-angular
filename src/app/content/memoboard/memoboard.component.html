@@ -1,35 +1,95 @@
-<div class="content-container" fxFill fxLayoutAlign="center center" >
-    <div class="board" fxLayout="column">
-        <div class="top-bar" fxLayout fxFlex="10" fxLayoutAlign=" center">
-            <button class="more" mat-icon-button  [matMenuTriggerFor]="menu">
-                <mat-icon>more_vert</mat-icon>
-            </button>
+<div class="kanban-container" fxLayout="column">
+    <div class="kanban-header" fxLayout="column" fxLayoutGap="10px">
+        <div class="top-bar" fxLayout fxLayoutGap="5px">
+            <eunes-button 
+            [icon]="'arrow_back'"
+            [background]="false">
+            [hover-eff]="false">
+            </eunes-button>
+
+            <eunes-dropdown></eunes-dropdown>
             
-            <mat-menu #menu="matMenu">
-                <ng-template matMenuContent let-name="name">
-                    <button mat-menu-item (click)="clear()">Clear History</button>
-                </ng-template>
-            </mat-menu>
+            <input class="search-field" type="text" placeholder="search">
         </div>
-        <div fxLayout="column" fxFlex="90" fxLayoutAlign="end" style="padding: 10px;">
-            <mat-list fxLayout="column" *ngFor="let msg of messages">
-                <div class="bubble"
-                [ngClass]="{'right-bubble': msg.user === 'me', 'left-bubble': msg.user === 'he'}">
-                    <span>{{ msg.message }}</span>
+    </div>
+    
+    <div class="board-container" fxFlex fxLayout="column" fxLayoutGap="20px">
+        <div class="boards-top-bar" fxLayout>
+            <div fxLayout="column" fxLayoutGap="10px">
+                <span class="title">Finance Project</span>
+                <span class="description">Last update - 10 March 2022</span>
+            </div>
+            <eunes-button [icon]="'add'" (click)="addBoard()"></eunes-button>
+
+            <div class="extra" fxLayout fxLayoutAlign=" center" fxLayoutGap="10px" style="margin-left: auto">
+                <span>members</span>
+                <div style="background: white; height: 100%; width: 100px; border-radius: 10px; padding: 10px">
+                    <mat-icon>circle</mat-icon>
                 </div>
-            </mat-list>
-            <div class="btm-bar" fxLayout fxLayoutAlign=" center" fxLayoutGap="10px">
-                <div class="input-bar" fxLayout fxLayoutGap="3px" fxLayoutAlign=" center">
-                    <mat-icon style="color:LightGrey">sentiment_satisfied</mat-icon>
-                    <input 
-                    class="input-field" 
-                    fxFlex="80" 
-                    type="text" 
-                    placeholder="Message..." 
-                    (keydown.enter)="send()" 
-                    [(ngModel)]="current_msg">
+                <eunes-button [icon]="'more_vert'"></eunes-button>
+            </div>
+        </div>
+
+        <div class="boards" fxLayout fxLayoutGap="10px" 
+        cdkDropListGroup
+        cdkDropList 
+        cdkDropListOrientation="horizontal"
+        [cdkDropListData]="boards"
+        (cdkDropListDropped)="dropBoard($event)">
+            <div *ngFor="let board of boards">
+                <div class="board" cdkDrag
+                fxLayout="column" fxLayoutGap="10px">
+                    <div class="board-top-bar">
+                        <div class="board-header" fxLayout fxLayoutAlign=" center">
+                            <div fxFlex>
+                                <span *ngIf="!board?.editing" style="font-weight: bold;" (dblclick)="toggleEdit(board)">{{ board.name }}</span>
+                                <form #form="ngForm" (ngSubmit)="toggleEdit(board);submitForm(form)" *ngIf="board?.editing">
+                                    <input name="name" [(ngModel)]="board.name">
+                                </form>
+                            </div>
+                            <eunes-button
+                            type="icon-button"
+                            color="blue"
+                            [icon]="'add'"
+                            [hover]="true"
+                            (click)="addMemo(board)">
+                            </eunes-button>
+                        </div>
+                    </div>
+
+                    <div class="memos" 
+                    id={{board.name}}
+                    fxLayout="column"
+                    cdkDropList
+                    [cdkDropListData]="board?.memos"
+                    [cdkDropListConnectedTo]="getConnectedList()"
+                    
+                    (cdkDropListDropped)="dropMemo($event)">
+                        <div *ngFor="let memo of board?.memos">
+                            <div class="memo" cdkDrag (click)="editMemo(memo)"
+                            fxLayout="column" fxLayoutGap="5px">
+                                <div class="memo-header" 
+                                fxLayout fxLayoutAlign=" center">
+                                    <span class="title" fxFlex>{{ memo.name }}</span>
+                                    <eunes-button
+                                    [icon]="'more_horiz'">
+                                    </eunes-button>
+                                </div>
+                                
+                                <div class="memo-content" fxLayout="column" fxLayoutGap="10px">
+                                    <div *ngIf="memo?.config?.progress">
+                                        <eunes-progress-bar 
+                                        [value]="memo.config?.progress">
+                                        </eunes-progress-bar>
+                                    </div>
+                                    <div *ngIf="memo?.config?.text">
+                                        <div fxFlex>{{ memo.config.text }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button class="send-button" (click)="send()">Send</button>
             </div>
         </div>
     </div>
