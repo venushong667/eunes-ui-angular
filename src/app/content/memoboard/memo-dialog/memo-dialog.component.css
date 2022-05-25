@@ -1,17 +1,54 @@
-/* .container {
-    padding: 10px;
-} */
-
 textarea {
     resize: none;
     overflow: hidden;
     overflow-wrap: break-word;
-    outline: none;
     width: 100%;
     border-radius: 5px;
-    background: transparent;
+    background: ghostwhite;
+}
+
+.editable *:not(textarea) {
+    pointer-events: none;
+}
+
+textarea:focus {
+    outline: lightsteelblue solid 3px;
 }
 
 .title textarea {
+    padding: 5px 10px;
+    display: block;
     font-size: 20px;
+}
+
+.title textarea:not(:focus) {
+    background: transparent;
+    outline: none;
+}
+
+.text {
+    cursor: pointer;
+}
+
+.text textarea {
+    display: none;
+    min-height: 50px;
+    padding: 10px;
+}
+
+.text.editing textarea {
+    display: block !important;
+}
+
+.editing .hide-on-edit {
+    display: none !important;
+}
+
+.section {
+    padding: 0 10px;
+}
+
+button {
+    width: 80px;
+    margin-left: auto;
 }

@@ -1,7 +1,28 @@
 <div class="container" fxLayout="column" fxLayoutGap="10px">
-    <div class="title">
-        <h2>{{ memo.name }}</h2>
-        <textarea fxFlex rows="1" (blur)="true" data-autosize="true" (keyup)="enter($event)" (click)="edit($event)" ></textarea>
+    <div class="title editable">
+        <textarea fxFlex data-autosize="true" rows="1"
+            (click)="edit($event)" 
+            [(ngModel)]="memo.name" 
+            [ngModelOptions]="{updateOn: 'blur'}"
+            (blur)="exitEdit()"
+            (keydown.enter)="enter($event)">
+        </textarea>
     </div>
-    <textarea data-autosize="true" (keyup)="enter($event)" (click)="edit($event)" >{{ memo.config.text }}</textarea>
+    <div class="description section">
+        <h3>Description</h3>
+        <div class="text editable" (click)="edit($event)">
+            <div class="hide-on-edit">
+                {{ memo.config.text }}
+            </div>
+            <textarea data-autosize="true" 
+                [ngModel]="memo.config.text"
+                [(ngModel)]="memo.config.text" 
+                [ngModelOptions]="{updateOn: 'blur'}"
+                (blur)="exitEdit()">
+            </textarea>
+        </div>
+    </div>
+    <div class="footer section" fxLayout>
+        <button mat-raised-button color="primary" (click)="updateMemo()">Save</button>
+    </div>
 </div>

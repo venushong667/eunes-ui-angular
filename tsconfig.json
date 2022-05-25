@@ -20,9 +20,11 @@
     "target": "es2017",
     "module": "es2020",
     "lib": [
-      "es2018",
-      "dom"
-    ]
+        "es2018",
+        "dom"
+    ],
+    "strictPropertyInitialization": false,
+    
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

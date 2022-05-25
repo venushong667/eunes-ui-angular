@@ -95,7 +95,8 @@ export class MemoboardComponent {
     editMemo(memo: Memo) {
         this._dialog.open(MemoDialogComponent, {
             width: '800px',
-            data: memo
+            data: memo,
+            autoFocus: false
         });
     }
 
