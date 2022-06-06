@@ -3,8 +3,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { each, filter, find } from 'lodash';
-import { BehaviorSubject, interval, Subject } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, interval, ReplaySubject, Subject } from 'rxjs';
+import { map, mergeMap, takeUntil } from 'rxjs/operators';
 
 import { Board, Memo } from './constants';
 import { MemoDialogComponent } from './memo-dialog/memo-dialog.component';
@@ -28,6 +28,7 @@ export class MemoboardComponent {
     private _newMemo: ElementRef;
 
     createMemoEvent: Subject<boolean> = new Subject<boolean>();
+    destroy$: ReplaySubject<boolean> = new ReplaySubject();
 
     boards: Array<Board> = [];
 
@@ -50,6 +51,11 @@ export class MemoboardComponent {
         this.getAllItems();
     }
 
+    ngOnDestroy() {
+        this.destroy$.next(true);
+        this.destroy$.complete();
+    }
+
     getAllItems() {
         this._memo.getBoards().pipe(
             mergeMap((boards) => this._memo.getMemos().pipe(
@@ -61,6 +67,8 @@ export class MemoboardComponent {
                     return boards;
                 })
             ))
+        ).pipe(
+            takeUntil(this.destroy$)
         ).subscribe(data => {
             this.boards = data;
         });
@@ -73,11 +81,9 @@ export class MemoboardComponent {
                 id: '',
                 boardId: board.id,
                 name: '',
-                config: {
-                    text: ''
-                },
-                createdAt: new Date(),
-                updatedAt: new Date()
+                description: '',
+                position: 0,
+                config: {}
             }
             brd.memos.unshift(memo);
         }
@@ -101,7 +107,9 @@ export class MemoboardComponent {
     }
 
     createMemo(memo: Memo) {
-        this._memo.createMemo(memo.name, memo.boardId, memo.config).subscribe(data => {
+        this._memo.createMemo(memo).pipe(
+            takeUntil(this.destroy$)
+        ).subscribe(data => {
             console.log(data);
         });
     }
@@ -145,7 +153,9 @@ export class MemoboardComponent {
     }
 
     deleteMemo(memo: Memo) {
-        this._memo.deleteMemo(memo.id).subscribe(data=>{
+        this._memo.deleteMemo(memo.id).pipe(
+            takeUntil(this.destroy$)
+        ).subscribe(data=>{
             console.log(data);
         })
     }

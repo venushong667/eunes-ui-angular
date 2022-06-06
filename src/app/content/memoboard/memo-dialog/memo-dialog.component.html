@@ -15,25 +15,25 @@
             <h3>Description</h3>
         </div>
         <div class="text editable" (click)="edit($event); desc.focus()">
-            <div class="hide-on-edit" *ngIf="memo.config.text" markdown ngPreserveWhitespaces>
-                {{ memo.config.text }}
+            <div class="hide-on-edit" *ngIf="memo.description" markdown ngPreserveWhitespaces>
+                {{ memo.description }}
             </div>
             <textarea #desc 
                 data-autosize="true" 
                 spellcheck="false"
-                [ngModel]="memo.config.text"
-                [(ngModel)]="memo.config.text" 
+                [ngModel]="memo.description"
+                [(ngModel)]="memo.description" 
                 [ngModelOptions]="{updateOn: 'blur'}"
-                (blur)="memo.config.text.length > 0 ? exitEdit(): desc.focus()">
+                (blur)="memo.description.length > 0 ? exitEdit(): desc.focus()">
             </textarea>
             <textarea class="no-text" 
                 spellcheck="false"
-                [style.display]="memo.config.text.length === 0 ? 'block' : 'none'"
+                [style.display]="memo.description.length === 0 ? 'block' : 'none'"
                 placeholder="Write your description"
-                [ngModel]="memo.config.text"
-                [(ngModel)]="memo.config.text" 
+                [ngModel]="memo.description"
+                [(ngModel)]="memo.description" 
                 [ngModelOptions]="{updateOn: 'blur'}"
-                (blur)="memo.config.text.length > 0 ? exitEdit(): desc.focus()">
+                (blur)="memo.description.length > 0 ? exitEdit(): desc.focus()">
             </textarea>
         </div>
     </div>

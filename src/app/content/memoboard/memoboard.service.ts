@@ -59,11 +59,13 @@ export class MemoboardService {
         return this._http.get<Array<Memo>>(`/api/memoboard/memos`);
     }
 
-    createMemo = (name: string, boardId: string, config: any): Observable<Memo> => {
+    createMemo = (memo: Memo): Observable<Memo> => {
         const body = {
-            name: name,
-            boardId: boardId,
-            config: config
+            name: memo.name,
+            boardId: memo.boardId,
+            description: memo.description,
+            position: memo.position,
+            config: memo.config
         }
         return this._http.post<Memo>('/api/memoboard/memo', body);
     }

@@ -11,7 +11,7 @@ export interface Memo {
     id: string;
     name: string;
     boardId: string;
+    description: string;
+    position: number;
     config: any;
-    createdAt: Date;
-    updatedAt: Date;
 }

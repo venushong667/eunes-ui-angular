@@ -1,6 +1,7 @@
 import { Component, Inject, Renderer2 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Memo } from '../constants';
 import { MemoboardService } from '../memoboard.service';
@@ -25,18 +26,34 @@ export class MemoDialogComponent {
     currentInput: string;
 
     exitEditEvent: Subject<any> = new Subject();
+    destroy$: ReplaySubject<boolean> = new ReplaySubject();
 
     ngOnInit(): void {
         this.editing = false;
         this.exitEditListener();
-        console.log(this.memo)
+        this.saveBeforeCloseListener();
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     exitEditListener() {
-        this.exitEditEvent.subscribe(() => {
+        this.exitEditEvent.pipe(
+            takeUntil(this.destroy$)
+        ).subscribe(() => {
             this._renderer.removeClass(this.editingElement, this.editingClass);
             this.editingElement.blur();
             this.editingElement = null;
+        });
+    }
+
+    saveBeforeCloseListener() {
+        this.dialogRef.beforeClosed().pipe(
+            takeUntil(this.destroy$)
+        ).subscribe(() => {
+            this.updateMemo();
         });
     }
 
@@ -64,7 +81,9 @@ export class MemoDialogComponent {
 
     updateMemo() {
         console.log(this.memo)
-        this._memoboard.updateMemo(this.memo).subscribe((data) => {
+        this._memoboard.updateMemo(this.memo).pipe(
+            takeUntil(this.destroy$)
+        ).subscribe((data) => {
             this.closeDialog();
         });
     }

@@ -98,13 +98,13 @@
                                 </div>
                                 
                                 <div class="memo-content" fxLayout="column" fxLayoutGap="10px">
-                                    <div *ngIf="memo?.config?.progress">
+                                    <!-- <div *ngIf="memo?.config?.progress">
                                         <eunes-progress-bar 
                                         [value]="memo.config?.progress">
                                         </eunes-progress-bar>
-                                    </div>
-                                    <div *ngIf="memo?.config?.text">
-                                        <div fxFlex markdown>{{ memo.config.text }}</div>
+                                    </div> -->
+                                    <div *ngIf="memo?.description">
+                                        <div fxFlex markdown>{{ memo.description }}</div>
                                     </div>
                                 </div>
                             </div>
