@@ -59,12 +59,17 @@ export class MemoboardService {
         return this._http.get<Array<Memo>>(`/api/memoboard/memos`);
     }
 
-    createMemo = (config: any): Observable<Memo> => {
-        return this._http.post<Memo>('/api/memoboard/memo', config);
+    createMemo = (name: string, boardId: string, config: any): Observable<Memo> => {
+        const body = {
+            name: name,
+            boardId: boardId,
+            config: config
+        }
+        return this._http.post<Memo>('/api/memoboard/memo', body);
     }
 
-    updateMemo = (id: string, config: any): Observable<Memo> => {
-        return this._http.put<Memo>(`/api/memoboard/memo/${id}`, config);
+    updateMemo = (memo: Memo): Observable<Memo> => {
+        return this._http.put<Memo>(`/api/memoboard/memo/${memo.id}`, memo);
     }
 
     deleteMemo = (id: string) => {

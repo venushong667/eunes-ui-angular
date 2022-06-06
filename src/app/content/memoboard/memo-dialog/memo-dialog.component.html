@@ -1,24 +1,39 @@
 <div class="container" fxLayout="column" fxLayoutGap="10px">
-    <div class="title editable">
-        <textarea fxFlex data-autosize="true" rows="1"
+    <div class="title editable" fxLayout fxLayoutAlign=" center">
+        <mat-icon>bookmark_outline</mat-icon>
+        <textarea #name fxFlex data-autosize="true" spellcheck="false" rows="1"
             (click)="edit($event)" 
             [(ngModel)]="memo.name" 
             [ngModelOptions]="{updateOn: 'blur'}"
-            (blur)="exitEdit()"
+            (blur)="memo.name.length > 0 ? exitEdit(): name.focus()"
             (keydown.enter)="enter($event)">
         </textarea>
     </div>
-    <div class="description section">
-        <h3>Description</h3>
-        <div class="text editable" (click)="edit($event)">
-            <div class="hide-on-edit">
+    <div class="description section" fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout fxLayoutAlign=" center">
+            <mat-icon>description_outline</mat-icon>
+            <h3>Description</h3>
+        </div>
+        <div class="text editable" (click)="edit($event); desc.focus()">
+            <div class="hide-on-edit" *ngIf="memo.config.text" markdown ngPreserveWhitespaces>
                 {{ memo.config.text }}
             </div>
-            <textarea data-autosize="true" 
+            <textarea #desc 
+                data-autosize="true" 
+                spellcheck="false"
                 [ngModel]="memo.config.text"
                 [(ngModel)]="memo.config.text" 
                 [ngModelOptions]="{updateOn: 'blur'}"
-                (blur)="exitEdit()">
+                (blur)="memo.config.text.length > 0 ? exitEdit(): desc.focus()">
+            </textarea>
+            <textarea class="no-text" 
+                spellcheck="false"
+                [style.display]="memo.config.text.length === 0 ? 'block' : 'none'"
+                placeholder="Write your description"
+                [ngModel]="memo.config.text"
+                [(ngModel)]="memo.config.text" 
+                [ngModelOptions]="{updateOn: 'blur'}"
+                (blur)="memo.config.text.length > 0 ? exitEdit(): desc.focus()">
             </textarea>
         </div>
     </div>

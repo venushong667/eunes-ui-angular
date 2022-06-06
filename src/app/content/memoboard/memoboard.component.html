@@ -13,8 +13,8 @@
         </div>
     </div>
     
-    <div class="board-container" fxFlex fxLayout="column" fxLayoutGap="20px">
-        <div class="boards-top-bar" fxLayout>
+    <div class="project-wrapper" fxFlex fxLayout="column" fxLayoutGap="20px">
+        <div class="project-top-bar" fxLayout>
             <div fxLayout="column" fxLayoutGap="10px">
                 <span class="title">Finance Project</span>
                 <span class="description">Last update - 10 March 2022</span>
@@ -30,22 +30,22 @@
             </div>
         </div>
 
-        <div class="boards" fxLayout fxLayoutGap="10px" 
+        <div class="boards-wrapper" fxLayout fxLayoutGap="10px" 
         cdkDropListGroup
         cdkDropList 
         cdkDropListOrientation="horizontal"
         [cdkDropListData]="boards"
         (cdkDropListDropped)="dropBoard($event)">
-            <div *ngFor="let board of boards">
+            <ng-container *ngFor="let board of boards">
                 <div class="board" cdkDrag
                 fxLayout="column" fxLayoutGap="10px">
                     <div class="board-top-bar">
                         <div class="board-header" fxLayout fxLayoutAlign=" center">
                             <div fxFlex>
-                                <span *ngIf="!board?.editing" style="font-weight: bold;" (dblclick)="toggleEdit(board)">{{ board.name }}</span>
-                                <form #form="ngForm" (ngSubmit)="toggleEdit(board);submitForm(form)" *ngIf="board?.editing">
+                                <span style="font-weight: bold;" (dblclick)="toggleEdit(board)">{{ board.name }}</span>
+                                <!-- <form #form="ngForm" (ngSubmit)="toggleEdit(board);submitForm(form)">
                                     <input name="name" [(ngModel)]="board.name">
-                                </form>
+                                </form> -->
                             </div>
                             <eunes-button
                             type="icon-button"
@@ -63,17 +63,38 @@
                     cdkDropList
                     [cdkDropListData]="board?.memos"
                     [cdkDropListConnectedTo]="getConnectedList()"
-                    
-                    (cdkDropListDropped)="dropMemo($event)">
+                    (cdkDropListDropped)="dropMemo($event, board)">
                         <div *ngFor="let memo of board?.memos">
-                            <div class="memo" cdkDrag (click)="editMemo(memo)"
+                            <div class="memo" cdkDrag (click)="memo.name && editMemo(memo)"
                             fxLayout="column" fxLayoutGap="5px">
                                 <div class="memo-header" 
                                 fxLayout fxLayoutAlign=" center">
-                                    <span class="title" fxFlex>{{ memo.name }}</span>
-                                    <eunes-button
-                                    [icon]="'more_horiz'">
-                                    </eunes-button>
+                                    <ng-container *ngIf="memo.name">
+                                        <span class="title" fxFlex>{{ memo.name }}</span>
+                                        <eunes-button
+                                        [icon]="'more_horiz'"
+                                        [matMenuTriggerFor]="menu"
+                                        (click)="$event.stopPropagation()">
+                                        </eunes-button>
+
+                                        <mat-menu #menu="matMenu">
+                                            <button mat-menu-item (click)="deleteMemo(memo)">
+                                                <mat-icon>delete</mat-icon>
+                                                <span>Delete</span>
+                                            </button>
+                                        </mat-menu>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="!memo.name">
+                                        <textarea #newMemo fxFlex 
+                                        autofocus
+                                        spellcheck="false"
+                                        placeholder="Enter a title for this memo"
+                                        [(ngModel)]="memo.name"
+                                        [ngModelOptions]="{updateOn: 'blur'}"
+                                        (keydown.enter)="newMemo.blur()"
+                                        (blur)="memo.name.length > 0 ? createMemo(memo) : removeLatestMemo(board)"></textarea>
+                                    </ng-container>
                                 </div>
                                 
                                 <div class="memo-content" fxLayout="column" fxLayoutGap="10px">
@@ -83,14 +104,14 @@
                                         </eunes-progress-bar>
                                     </div>
                                     <div *ngIf="memo?.config?.text">
-                                        <div fxFlex>{{ memo.config.text }}</div>
+                                        <div fxFlex markdown>{{ memo.config.text }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
         </div>
     </div>
 </div>

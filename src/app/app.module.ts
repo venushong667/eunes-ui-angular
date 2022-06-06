@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -14,7 +15,8 @@ import { AppRoutingModule } from './app-routing.module';
         BrowserModule,
         AppRoutingModule,
         FlexLayoutModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MarkdownModule.forRoot(),
     ],
     providers: [],
     bootstrap: [AppComponent]

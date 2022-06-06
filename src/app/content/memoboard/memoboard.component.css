@@ -24,19 +24,23 @@
     border: 2px solid lightgray;
 }
 
-.board-container {
+.project-wrapper {
     background-color: ghostwhite;
     padding: 30px;
 }
 
-.boards-top-bar .title {
+.project-top-bar .title {
     font-size: 20px;
     font-weight: bold;
 }
 
-.boards-top-bar .description {
+.project-top-bar .description {
     color: lightslategrey;
     font-weight: 450;
+}
+
+.boards-wrapper {
+    height: 100%;
 }
 
 .board {
@@ -71,6 +75,7 @@
     padding: 15px;
     margin: 8px 0;
     cursor: pointer;
+    box-shadow: 0px 1px 3px lightsteelblue;
 }
 
 .memo-header .title {
@@ -79,7 +84,9 @@
 
 textarea {
     outline: none;
-    background-color: whitesmoke;
+    background-color: transparent;
+    padding: 5px;
+    resize: none;
 }
 
 eunes-button ::ng-deep .background {

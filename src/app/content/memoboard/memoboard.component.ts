@@ -1,9 +1,9 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { each, filter } from 'lodash';
-import { BehaviorSubject, interval } from 'rxjs';
+import { each, filter, find } from 'lodash';
+import { BehaviorSubject, interval, Subject } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
 import { Board, Memo } from './constants';
@@ -16,6 +16,19 @@ import { MemoboardService } from './memoboard.service';
     styleUrls: ['./memoboard.component.css']
 })
 export class MemoboardComponent {
+
+    @ViewChild('newMemo', { static: false }) 
+    set newMemo(element: ElementRef) {
+        if (element) {
+            element.nativeElement.focus();
+            this._newMemo = element;
+        }
+    }
+
+    private _newMemo: ElementRef;
+
+    createMemoEvent: Subject<boolean> = new Subject<boolean>();
+
     boards: Array<Board> = [];
 
     editing = false;
@@ -53,14 +66,30 @@ export class MemoboardComponent {
         });
     }
 
-    addMemo(board: any) {
-        board.notes.unshift({});
-        this.editing = true;
+    addMemo(board: Board) {
+        let brd = find(this.boards, {id: board.id});
+        if (brd) {
+            const memo: Memo = {
+                id: '',
+                boardId: board.id,
+                name: '',
+                config: {
+                    text: ''
+                },
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+            brd.memos.unshift(memo);
+        }
+
     }
 
-    dropMemo(event: CdkDragDrop<any>) {
+    dropMemo(event: CdkDragDrop<any>, board: Board) {
+        console.log(event)
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+            // this._memo.updateMemo()
+            // this._memo.updateBoard(board.id, )
         } else {
             transferArrayItem(
                 event.previousContainer.data,
@@ -69,6 +98,12 @@ export class MemoboardComponent {
                 event.currentIndex,
             );
         }
+    }
+
+    createMemo(memo: Memo) {
+        this._memo.createMemo(memo.name, memo.boardId, memo.config).subscribe(data => {
+            console.log(data);
+        });
     }
 
     dropBoard(event: CdkDragDrop<any>) {
@@ -103,6 +138,16 @@ export class MemoboardComponent {
     
     submitForm(form: NgForm) {
         console.log(form);
+    }
+
+    removeLatestMemo(board: Board) {
+        board.memos.shift();
+    }
+
+    deleteMemo(memo: Memo) {
+        this._memo.deleteMemo(memo.id).subscribe(data=>{
+            console.log(data);
+        })
     }
 
 }

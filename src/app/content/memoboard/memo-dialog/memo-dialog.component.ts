@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output, Renderer2 } from '@angular/core';
+import { Component, Inject, Renderer2 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
@@ -64,7 +64,7 @@ export class MemoDialogComponent {
 
     updateMemo() {
         console.log(this.memo)
-        this._memoboard.updateMemo(this.memo.id, this.memo).subscribe((data) => {
+        this._memoboard.updateMemo(this.memo).subscribe((data) => {
             this.closeDialog();
         });
     }

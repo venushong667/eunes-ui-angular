@@ -5,7 +5,6 @@ export interface Board {
     projectId: string;
     config: any;
     memos: Array<Memo>;
-    editing: Boolean;
 }
 
 export interface Memo {
@@ -15,5 +14,4 @@ export interface Memo {
     config: any;
     createdAt: Date;
     updatedAt: Date;
-    editing: Boolean;
 }

@@ -14,6 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EunesButtonModule } from '@eunes/elements/button';
 import { EunesDropdownModule } from '@eunes/elements/dropdown';
 import { EunesProgressBarModule } from '@eunes/elements/progress-bar';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { MemoDialogComponent } from './memo-dialog/memo-dialog.component';
 import { MemoboardComponent } from './memoboard.component';
@@ -39,6 +40,7 @@ import { MemoboardRoutingModule } from './memoboard-routing.module';
         MatIconModule,
         MatMenuModule,
         MatProgressBarModule,
+        MarkdownModule.forChild(),
         EunesButtonModule,
         EunesProgressBarModule,
         EunesDropdownModule,
