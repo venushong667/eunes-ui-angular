@@ -37,7 +37,7 @@
         [cdkDropListData]="boards"
         (cdkDropListDropped)="dropBoard($event)">
             <ng-container *ngFor="let board of allBoards; let boardIndex = index">
-                <div class="board" cdkDrag
+                <div class="board" cdkDrag (cdkDragStarted)="draggingBoard = board"
                 fxLayout="column" fxLayoutGap="10px">
                     <div class="board-top-bar">
                         <div class="board-header" fxLayout fxLayoutAlign=" center">
@@ -81,7 +81,7 @@
                                 [(ngModel)]="board.name"
                                 [ngModelOptions]="{updateOn: 'blur'}"
                                 (keydown.enter)="newBoard.blur()"
-                                (blur)="board.name.length > 0 ? createBoard(board) : removeLatestBoard()"></textarea>
+                                (blur)="board.name.length > 0 ? createBoard(board, boardIndex) : removeLatestBoard()"></textarea>
                             </ng-container>
                         </div>
                     </div>
@@ -132,7 +132,8 @@
                                         </eunes-progress-bar>
                                     </div> -->
                                     <div *ngIf="memo?.description">
-                                        <div fxFlex markdown>{{ memo.description }}</div>
+                                        <div fxFlex markdown
+                                        [innerHTML]="memo.description | markdown"></div>
                                     </div>
                                 </div>
                             </div>

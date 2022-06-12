@@ -53,6 +53,7 @@ export class MemoboardComponent {
     allBoards: Array<Board> = [];
     allMemos: Array<Memo> = [];
     draggingMemo: Memo;
+    draggingBoard: Board
 
     constructor(
         private _memo: MemoboardService,
@@ -82,12 +83,8 @@ export class MemoboardComponent {
         ).pipe(
             takeUntil(this.destroy$)
         ).subscribe(data => {
-            this.allBoards = data;
+            this.allBoards = sortBy(data, ['position']);;
         });
-    }
-
-    dropBoard(event: CdkDragDrop<any>) {
-        moveItemInArray(this.allBoards, event.previousIndex, event.currentIndex);
     }
 
     getConnectedList(): any[] {
@@ -99,18 +96,26 @@ export class MemoboardComponent {
             id: '',
             name: '',
             projectId: this.projectId,
+            position: 0,
             config: {},
             memos: []
         }
         this.allBoards.push(board);
     }
 
-    createBoard(board: Board) {
+    dropBoard(event: CdkDragDrop<any>) {
+        if (event.previousIndex === event.currentIndex) return;
+
+        moveItemInArray(this.allBoards, event.previousIndex, event.currentIndex);
+        this.draggingBoard.position = this.computePosition(event.currentIndex, this.allBoards);
+        this._memo.updateBoard(this.draggingBoard).subscribe();
+    }
+
+    createBoard(board: Board, index: number) {
+        board.position = this.computePosition(index, this.allBoards);
         this._memo.createBoard(board).pipe(
             takeUntil(this.destroy$)
-        ).subscribe(() => {
-            this.getAllItems();
-        });
+        ).subscribe();
     }
 
     deleteBoard(board: Board, index: number) {
@@ -167,7 +172,7 @@ export class MemoboardComponent {
         });
     }
 
-    computePosition(index:number, memos: Array<Memo>) {
+    computePosition(index:number, memos: Array<Memo> | Array<Board>) {
         if (memos.length === 1) return 50000;
 
         let prev = 0;
