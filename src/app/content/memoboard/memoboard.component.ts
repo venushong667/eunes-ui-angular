@@ -1,8 +1,8 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { each, filter, find } from 'lodash';
+import { each, extend, filter, find, sortBy } from 'lodash';
 import { BehaviorSubject, interval, ReplaySubject, Subject } from 'rxjs';
 import { map, mergeMap, takeUntil } from 'rxjs/operators';
 
@@ -25,7 +25,18 @@ export class MemoboardComponent {
         }
     }
 
+    @ViewChild('newBoard', { static: false }) 
+    set newBoard(element: ElementRef) {
+        if (element) {
+            element.nativeElement.focus();
+            this._newBoard = element;
+        }
+    }
+
+    projectId = '781d65ce-77cd-4298-8b3c-7ba5ec29d31b';
+
     private _newMemo: ElementRef;
+    private _newBoard: ElementRef;
 
     createMemoEvent: Subject<boolean> = new Subject<boolean>();
     destroy$: ReplaySubject<boolean> = new ReplaySubject();
@@ -41,10 +52,12 @@ export class MemoboardComponent {
     timer$ = interval(100);
     allBoards: Array<Board> = [];
     allMemos: Array<Memo> = [];
+    draggingMemo: Memo;
 
     constructor(
         private _memo: MemoboardService,
-        private _dialog: MatDialog
+        private _dialog: MatDialog,
+        private _cd: ChangeDetectorRef
     ) { }
 
     ngOnInit() {
@@ -61,21 +74,56 @@ export class MemoboardComponent {
             mergeMap((boards) => this._memo.getMemos().pipe(
                 map((memos) => {
                     each(boards, board => {
-                        board.memos = filter(memos, { 'boardId': board.id })
+                        board.memos = sortBy(filter(memos, { 'boardId': board.id }), ['position']);
                     })
-                    console.log(boards);
                     return boards;
                 })
             ))
         ).pipe(
             takeUntil(this.destroy$)
         ).subscribe(data => {
-            this.boards = data;
+            this.allBoards = data;
         });
     }
 
+    dropBoard(event: CdkDragDrop<any>) {
+        moveItemInArray(this.allBoards, event.previousIndex, event.currentIndex);
+    }
+
+    getConnectedList(): any[] {
+        return this.allBoards.map(x => `${x.name}`);
+    }
+
+    addBoard() {
+        const board: Board = {
+            id: '',
+            name: '',
+            projectId: this.projectId,
+            config: {},
+            memos: []
+        }
+        this.allBoards.push(board);
+    }
+
+    createBoard(board: Board) {
+        this._memo.createBoard(board).pipe(
+            takeUntil(this.destroy$)
+        ).subscribe(() => {
+            this.getAllItems();
+        });
+    }
+
+    deleteBoard(board: Board, index: number) {
+        this.allBoards.splice(index, 1);
+        this._memo.deleteBoard(board.id).subscribe();
+    }
+
+    removeLatestBoard() {
+        this.allBoards.pop();
+    }
+
     addMemo(board: Board) {
-        let brd = find(this.boards, {id: board.id});
+        let brd = find(this.allBoards, {id: board.id});
         if (brd) {
             const memo: Memo = {
                 id: '',
@@ -87,43 +135,54 @@ export class MemoboardComponent {
             }
             brd.memos.unshift(memo);
         }
-
     }
 
     dropMemo(event: CdkDragDrop<any>, board: Board) {
-        console.log(event)
+        if (event.previousContainer === event.container && event.previousIndex === event.currentIndex) return;
+
         if (event.previousContainer === event.container) {
+            // same container
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-            // this._memo.updateMemo()
-            // this._memo.updateBoard(board.id, )
         } else {
+            // diff container
             transferArrayItem(
                 event.previousContainer.data,
                 event.container.data,
                 event.previousIndex,
                 event.currentIndex,
             );
+            this.draggingMemo.boardId = board.id;
         }
+
+        this.draggingMemo.position = this.computePosition(event.currentIndex, board.memos);
+        this._memo.updateMemo(this.draggingMemo).subscribe();
     }
 
-    createMemo(memo: Memo) {
+    createMemo(memo: Memo, index: number, memos: Array<Memo>) {
+        memo.position = this.computePosition(index, memos);
         this._memo.createMemo(memo).pipe(
             takeUntil(this.destroy$)
-        ).subscribe(data => {
-            console.log(data);
+        ).subscribe((data: Memo) => {
+            extend(memo, data);
         });
     }
 
-    dropBoard(event: CdkDragDrop<any>) {
-        moveItemInArray(this.boards, event.previousIndex, event.currentIndex);
-    }
+    computePosition(index:number, memos: Array<Memo>) {
+        if (memos.length === 1) return 50000;
 
-    addBoard() {
-        return;
-    }
-
-    getConnectedList(): any[] {
-        return this.boards.map(x => `${x.name}`);
+        let prev = 0;
+        let next = 0;
+        // if not first
+        if (index >= 1) prev = memos[index-1].position;
+        // if not last
+        if (index !== memos.length-1) next = memos[index+1].position;
+        
+        // if first
+        if (index === 0) return (0 + next) / 2;
+        //  if last
+        if (index === memos.length-1) return prev + 50000;
+        // if middle
+        return (prev + next) / 2;
     }
 
     toggleEdit(object: any) {
@@ -152,12 +211,9 @@ export class MemoboardComponent {
         board.memos.shift();
     }
 
-    deleteMemo(memo: Memo) {
-        this._memo.deleteMemo(memo.id).pipe(
-            takeUntil(this.destroy$)
-        ).subscribe(data=>{
-            console.log(data);
-        })
+    deleteMemo(memo: Memo, index: number, board: Board) {
+        board.memos.splice(index, 1);
+        this._memo.deleteMemo(memo.id).subscribe();
     }
 
 }

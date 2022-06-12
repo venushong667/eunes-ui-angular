@@ -60,7 +60,7 @@
 }
 
 .board-top-bar {
-    padding: 10px;
+    padding: 0px 10px;
 }
 
 .memos {
@@ -127,4 +127,8 @@ eunes-button ::ng-deep .background {
     background: rgba(245, 245, 245, 0.5);
     border: dashed 1px lightgray;
     background-size: 120%;
+}
+
+.new-board eunes-button ::ng-deep .background {
+    background: aliceblue;
 }

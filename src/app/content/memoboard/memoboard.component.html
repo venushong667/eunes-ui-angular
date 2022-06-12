@@ -36,24 +36,53 @@
         cdkDropListOrientation="horizontal"
         [cdkDropListData]="boards"
         (cdkDropListDropped)="dropBoard($event)">
-            <ng-container *ngFor="let board of boards">
+            <ng-container *ngFor="let board of allBoards; let boardIndex = index">
                 <div class="board" cdkDrag
                 fxLayout="column" fxLayoutGap="10px">
                     <div class="board-top-bar">
                         <div class="board-header" fxLayout fxLayoutAlign=" center">
-                            <div fxFlex>
-                                <span style="font-weight: bold;" (dblclick)="toggleEdit(board)">{{ board.name }}</span>
-                                <!-- <form #form="ngForm" (ngSubmit)="toggleEdit(board);submitForm(form)">
-                                    <input name="name" [(ngModel)]="board.name">
-                                </form> -->
-                            </div>
-                            <eunes-button
-                            type="icon-button"
-                            color="blue"
-                            [icon]="'add'"
-                            [hover]="true"
-                            (click)="addMemo(board)">
-                            </eunes-button>
+                            <ng-container *ngIf="board.name">
+                                <span fxFlex style="font-weight: bold;" (dblclick)="toggleEdit(board)">{{ board.name }}</span>
+                                <!-- <textarea #newBoard fxFlex 
+                                spellcheck="false"
+                                [(ngModel)]="board.name"
+                                [ngModelOptions]="{updateOn: 'blur'}"
+                                (keydown.enter)="newBoard.blur()"
+                                (blur)="board.name.length > 0 ? createBoard(board) : removeLatestBoard()"></textarea> -->
+                                
+                                <eunes-button
+                                type="icon-button"
+                                color="blue"
+                                [icon]="'add'"
+                                [hover]="true"
+                                (click)="addMemo(board)">
+                                </eunes-button>
+
+                                <eunes-button
+                                type="icon-button"
+                                color="blue"
+                                [icon]="'more_horiz'"
+                                [background]="false"
+                                [hover]="false"
+                                [matMenuTriggerFor]="boardMenu">
+                                </eunes-button>
+
+                                <mat-menu #boardMenu="matMenu">
+                                    <button mat-menu-item (click)="deleteBoard(board, boardIndex)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Delete</span>
+                                    </button>
+                                </mat-menu>
+                            </ng-container>
+                            <ng-container *ngIf="!board.name">
+                                <textarea #newBoard fxFlex 
+                                spellcheck="false"
+                                placeholder="Enter a title for this board"
+                                [(ngModel)]="board.name"
+                                [ngModelOptions]="{updateOn: 'blur'}"
+                                (keydown.enter)="newBoard.blur()"
+                                (blur)="board.name.length > 0 ? createBoard(board) : removeLatestBoard()"></textarea>
+                            </ng-container>
                         </div>
                     </div>
 
@@ -64,8 +93,8 @@
                     [cdkDropListData]="board?.memos"
                     [cdkDropListConnectedTo]="getConnectedList()"
                     (cdkDropListDropped)="dropMemo($event, board)">
-                        <div *ngFor="let memo of board?.memos">
-                            <div class="memo" cdkDrag (click)="memo.name && editMemo(memo)"
+                        <div *ngFor="let memo of board?.memos; let memoIndex = index">
+                            <div class="memo" cdkDrag (cdkDragStarted)="draggingMemo = memo" (click)="memo.name && editMemo(memo)"
                             fxLayout="column" fxLayoutGap="5px">
                                 <div class="memo-header" 
                                 fxLayout fxLayoutAlign=" center">
@@ -78,7 +107,7 @@
                                         </eunes-button>
 
                                         <mat-menu #menu="matMenu">
-                                            <button mat-menu-item (click)="deleteMemo(memo)">
+                                            <button mat-menu-item (click)="deleteMemo(memo, memoIndex, board)">
                                                 <mat-icon>delete</mat-icon>
                                                 <span>Delete</span>
                                             </button>
@@ -87,13 +116,12 @@
 
                                     <ng-container *ngIf="!memo.name">
                                         <textarea #newMemo fxFlex 
-                                        autofocus
                                         spellcheck="false"
                                         placeholder="Enter a title for this memo"
                                         [(ngModel)]="memo.name"
                                         [ngModelOptions]="{updateOn: 'blur'}"
                                         (keydown.enter)="newMemo.blur()"
-                                        (blur)="memo.name.length > 0 ? createMemo(memo) : removeLatestMemo(board)"></textarea>
+                                        (blur)="memo.name.length > 0 ? createMemo(memo, memoIndex, board.memos) : removeLatestMemo(board)"></textarea>
                                     </ng-container>
                                 </div>
                                 
@@ -112,6 +140,15 @@
                     </div>
                 </div>
             </ng-container>
+            <div class="new-board board-header" fxLayout fxLayoutAlign=" center">
+                <eunes-button
+                type="icon-button"
+                color="blue"
+                [icon]="'add'"
+                [hover]="true"
+                (click)="addBoard()">
+                </eunes-button>
+            </div>
         </div>
     </div>
 </div>
