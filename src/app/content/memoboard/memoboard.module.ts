@@ -20,12 +20,14 @@ import { MemoDialogComponent } from './memo-dialog/memo-dialog.component';
 import { MemoboardComponent } from './memoboard.component';
 import { MemoboardService } from './memoboard.service';
 import { MemoboardRoutingModule } from './memoboard-routing.module';
+import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
 
 
 @NgModule({
     declarations: [
         MemoboardComponent,
-        MemoDialogComponent
+        MemoDialogComponent,
+        ProjectDialogComponent
     ],
     imports: [
         DragDropModule,

@@ -1,4 +1,10 @@
 
+export interface Project {
+    id: string;
+    name: string;
+    config: any;
+}
+
 export interface Board {
     id: string;
     name: string;

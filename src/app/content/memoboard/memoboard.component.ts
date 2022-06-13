@@ -1,14 +1,15 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { each, extend, filter, find, sortBy } from 'lodash';
 import { BehaviorSubject, interval, ReplaySubject, Subject } from 'rxjs';
 import { map, mergeMap, takeUntil } from 'rxjs/operators';
 
-import { Board, Memo } from './constants';
+import { Board, Memo, Project } from './constants';
 import { MemoDialogComponent } from './memo-dialog/memo-dialog.component';
 import { MemoboardService } from './memoboard.service';
+import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
 
 @Component({
     selector: 'app-memoboard',
@@ -33,7 +34,7 @@ export class MemoboardComponent {
         }
     }
 
-    projectId = '781d65ce-77cd-4298-8b3c-7ba5ec29d31b';
+    selectedProject: Project;
 
     private _newMemo: ElementRef;
     private _newBoard: ElementRef;
@@ -50,6 +51,7 @@ export class MemoboardComponent {
     progress: number = 0;
 
     timer$ = interval(100);
+    allProjects: Array<Project> = [];
     allBoards: Array<Board> = [];
     allMemos: Array<Memo> = [];
     draggingMemo: Memo;
@@ -57,12 +59,11 @@ export class MemoboardComponent {
 
     constructor(
         private _memo: MemoboardService,
-        private _dialog: MatDialog,
-        private _cd: ChangeDetectorRef
+        private _dialog: MatDialog
     ) { }
 
     ngOnInit() {
-        this.getAllItems();
+        this.getProjects();
     }
 
     ngOnDestroy() {
@@ -70,8 +71,19 @@ export class MemoboardComponent {
         this.destroy$.complete();
     }
 
-    getAllItems() {
-        this._memo.getBoards().pipe(
+    getProjects() {
+        this._memo.getProjects().subscribe((data) => {
+            this.allProjects = data;
+        });
+    }
+
+    setProject(project: Project) {
+        this.selectedProject = project;
+        this.getAllItems(project.id);
+    }
+
+    getAllItems(projectId: string) {
+        this._memo.getBoards(projectId).pipe(
             mergeMap((boards) => this._memo.getMemos().pipe(
                 map((memos) => {
                     each(boards, board => {
@@ -87,6 +99,15 @@ export class MemoboardComponent {
         });
     }
 
+    addProject() {
+        this._dialog.open(ProjectDialogComponent, {
+            hasBackdrop: true,
+            disableClose: false,
+            backdropClass: 'dialogBackdrop',
+            panelClass: 'project-dialog'
+        });
+    }
+
     getConnectedList(): any[] {
         return this.allBoards.map(x => `${x.name}`);
     }
@@ -95,7 +116,7 @@ export class MemoboardComponent {
         const board: Board = {
             id: '',
             name: '',
-            projectId: this.projectId,
+            projectId: this.selectedProject.id,
             position: 0,
             config: {},
             memos: []

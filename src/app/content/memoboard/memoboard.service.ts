@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Board, Memo } from './constants.js';
+import { Board, Memo, Project } from './constants.js';
 
 @Injectable({
     providedIn: 'root'
@@ -11,16 +11,20 @@ export class MemoboardService {
 
     constructor(private _http: HttpClient) {}
 
-    getProjects = (id?: string) => {
-        if (id) {
-            return this._http.get<Object>(`/api/memoboard/project/${id}`);
-        } else {
-            return this._http.get<Array<Object>>(`/api/memoboard/projects`);
-        }
+    getProject = (id: string): Observable<Project> => {
+        return this._http.get<Project>(`/api/memoboard/project/${id}`);
     }
 
-    createProject = (config: Object): Observable<Object> => {
-        return this._http.post<Object>('/api/memoboard/project', config);
+    getProjects = (): Observable<Array<Project>> => {
+        return this._http.get<Array<Project>>(`/api/memoboard/projects`);
+    }
+
+    createProject = (project: Project): Observable<Project> => {
+        const body = {
+            name: project.name,
+            config: project.config
+        };
+        return this._http.post<Project>('/api/memoboard/project', body);
     }
 
     updateProject = (id: string, config: Object): Observable<Object> => {
@@ -31,11 +35,14 @@ export class MemoboardService {
         return this._http.delete(`/api/memoboard/project/${id}`);
     }
 
-    getBoard = (id?: string): Observable<Board> => {
+    getBoard = (id: string): Observable<Board> => {
         return this._http.get<Board>(`/api/memoboard/board/${id}`);
     }
 
-    getBoards = (id?: string): Observable<Array<Board>> => {
+    getBoards = (projectId?: string): Observable<Array<Board>> => {
+        if (projectId) {
+            return this._http.get<Array<Board>>(`/api/memoboard/boards?projectId=${projectId}`);
+        };
         return this._http.get<Array<Board>>(`/api/memoboard/boards`);
     }
 

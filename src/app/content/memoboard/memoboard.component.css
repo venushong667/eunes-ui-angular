@@ -132,3 +132,7 @@ eunes-button ::ng-deep .background {
 .new-board eunes-button ::ng-deep .background {
     background: aliceblue;
 }
+
+::ng-deep .project-dialog > mat-dialog-container {
+    box-shadow: 0px 1px 10px lightsteelblue, 0 0 0 1px lightsteelblue;
+}

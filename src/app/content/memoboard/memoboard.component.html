@@ -15,11 +15,24 @@
     
     <div class="project-wrapper" fxFlex fxLayout="column" fxLayoutGap="20px">
         <div class="project-top-bar" fxLayout>
-            <div fxLayout="column" fxLayoutGap="10px">
-                <span class="title">Finance Project</span>
-                <span class="description">Last update - 10 March 2022</span>
+            <div fxLayout fxLayoutGap="10px">
+                <div *ngIf="selectedProject" fxLayout="column" fxLayoutGap="10px">
+                    <span class="title">{{ selectedProject.name }}</span>
+                    <span class="description">Last update - 10 March 2022</span>
+                </div>
+                <eunes-button [icon]="'chevron_right'" [matMenuTriggerFor]="projectMenu"></eunes-button>
+                <mat-menu #projectMenu>
+                    <button mat-menu-item (click)="addProject()">
+                        <mat-icon>add</mat-icon> 
+                        <span>Add a new project</span>
+                    </button>
+                    <ng-container *ngFor="let project of allProjects">
+                        <button mat-menu-item (click)="setProject(project)">
+                            <span>{{ project.name }}</span>
+                        </button>
+                    </ng-container>
+                </mat-menu>
             </div>
-            <eunes-button [icon]="'add'" (click)="addBoard()"></eunes-button>
 
             <div class="extra" fxLayout fxLayoutAlign=" center" fxLayoutGap="10px" style="margin-left: auto">
                 <span>members</span>
@@ -30,7 +43,8 @@
             </div>
         </div>
 
-        <div class="boards-wrapper" fxLayout fxLayoutGap="10px" 
+        <div *ngIf="selectedProject"
+        class="boards-wrapper" fxLayout fxLayoutGap="10px" 
         cdkDropListGroup
         cdkDropList 
         cdkDropListOrientation="horizontal"
