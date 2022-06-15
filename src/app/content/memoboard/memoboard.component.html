@@ -7,18 +7,18 @@
             [hover-eff]="false">
             </eunes-button>
 
-            <eunes-dropdown></eunes-dropdown>
+            <!-- <eunes-dropdown></eunes-dropdown> -->
             
             <input class="search-field" type="text" placeholder="search">
         </div>
     </div>
     
-    <div class="project-wrapper" fxFlex fxLayout="column" fxLayoutGap="20px">
+    <div class="project-wrapper" *ngIf="selectedProject" fxFlex fxLayout="column" fxLayoutGap="20px">
         <div class="project-top-bar" fxLayout>
-            <div fxLayout fxLayoutGap="10px">
-                <div *ngIf="selectedProject" fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout fxLayoutGap="10px" fxLayoutAlign=" center">
+                <div fxLayout="column" fxLayoutGap="10px">
                     <span class="title">{{ selectedProject.name }}</span>
-                    <span class="description">Last update - 10 March 2022</span>
+                    <!-- <span class="description">Last update - 10 March 2022</span> -->
                 </div>
                 <eunes-button [icon]="'chevron_right'" [matMenuTriggerFor]="projectMenu"></eunes-button>
                 <mat-menu #projectMenu>
@@ -39,131 +39,17 @@
                 <div style="background: white; height: 100%; width: 100px; border-radius: 10px; padding: 10px">
                     <mat-icon>circle</mat-icon>
                 </div>
-                <eunes-button [icon]="'more_vert'"></eunes-button>
+                <eunes-button [icon]="'more_vert'" [matMenuTriggerFor]="projectMore"></eunes-button>
+                <mat-menu #projectMore>
+                    <button mat-menu-item (click)="deleteProject()">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                    </button>
+                </mat-menu>
             </div>
         </div>
 
-        <div *ngIf="selectedProject"
-        class="boards-wrapper" fxLayout fxLayoutGap="10px" 
-        cdkDropListGroup
-        cdkDropList 
-        cdkDropListOrientation="horizontal"
-        [cdkDropListData]="boards"
-        (cdkDropListDropped)="dropBoard($event)">
-            <ng-container *ngFor="let board of allBoards; let boardIndex = index">
-                <div class="board" cdkDrag (cdkDragStarted)="draggingBoard = board"
-                fxLayout="column" fxLayoutGap="10px">
-                    <div class="board-top-bar">
-                        <div class="board-header" fxLayout fxLayoutAlign=" center">
-                            <ng-container *ngIf="board.name">
-                                <span fxFlex style="font-weight: bold;" (dblclick)="toggleEdit(board)">{{ board.name }}</span>
-                                <!-- <textarea #newBoard fxFlex 
-                                spellcheck="false"
-                                [(ngModel)]="board.name"
-                                [ngModelOptions]="{updateOn: 'blur'}"
-                                (keydown.enter)="newBoard.blur()"
-                                (blur)="board.name.length > 0 ? createBoard(board) : removeLatestBoard()"></textarea> -->
-                                
-                                <eunes-button
-                                type="icon-button"
-                                color="blue"
-                                [icon]="'add'"
-                                [hover]="true"
-                                (click)="addMemo(board)">
-                                </eunes-button>
-
-                                <eunes-button
-                                type="icon-button"
-                                color="blue"
-                                [icon]="'more_horiz'"
-                                [background]="false"
-                                [hover]="false"
-                                [matMenuTriggerFor]="boardMenu">
-                                </eunes-button>
-
-                                <mat-menu #boardMenu="matMenu">
-                                    <button mat-menu-item (click)="deleteBoard(board, boardIndex)">
-                                        <mat-icon>delete</mat-icon>
-                                        <span>Delete</span>
-                                    </button>
-                                </mat-menu>
-                            </ng-container>
-                            <ng-container *ngIf="!board.name">
-                                <textarea #newBoard fxFlex 
-                                spellcheck="false"
-                                placeholder="Enter a title for this board"
-                                [(ngModel)]="board.name"
-                                [ngModelOptions]="{updateOn: 'blur'}"
-                                (keydown.enter)="newBoard.blur()"
-                                (blur)="board.name.length > 0 ? createBoard(board, boardIndex) : removeLatestBoard()"></textarea>
-                            </ng-container>
-                        </div>
-                    </div>
-
-                    <div class="memos" 
-                    id={{board.name}}
-                    fxLayout="column"
-                    cdkDropList
-                    [cdkDropListData]="board?.memos"
-                    [cdkDropListConnectedTo]="getConnectedList()"
-                    (cdkDropListDropped)="dropMemo($event, board)">
-                        <div *ngFor="let memo of board?.memos; let memoIndex = index">
-                            <div class="memo" cdkDrag (cdkDragStarted)="draggingMemo = memo" (click)="memo.name && editMemo(memo)"
-                            fxLayout="column" fxLayoutGap="5px">
-                                <div class="memo-header" 
-                                fxLayout fxLayoutAlign=" center">
-                                    <ng-container *ngIf="memo.name">
-                                        <span class="title" fxFlex>{{ memo.name }}</span>
-                                        <eunes-button
-                                        [icon]="'more_horiz'"
-                                        [matMenuTriggerFor]="menu"
-                                        (click)="$event.stopPropagation()">
-                                        </eunes-button>
-
-                                        <mat-menu #menu="matMenu">
-                                            <button mat-menu-item (click)="deleteMemo(memo, memoIndex, board)">
-                                                <mat-icon>delete</mat-icon>
-                                                <span>Delete</span>
-                                            </button>
-                                        </mat-menu>
-                                    </ng-container>
-
-                                    <ng-container *ngIf="!memo.name">
-                                        <textarea #newMemo fxFlex 
-                                        spellcheck="false"
-                                        placeholder="Enter a title for this memo"
-                                        [(ngModel)]="memo.name"
-                                        [ngModelOptions]="{updateOn: 'blur'}"
-                                        (keydown.enter)="newMemo.blur()"
-                                        (blur)="memo.name.length > 0 ? createMemo(memo, memoIndex, board.memos) : removeLatestMemo(board)"></textarea>
-                                    </ng-container>
-                                </div>
-                                
-                                <div class="memo-content" fxLayout="column" fxLayoutGap="10px">
-                                    <!-- <div *ngIf="memo?.config?.progress">
-                                        <eunes-progress-bar 
-                                        [value]="memo.config?.progress">
-                                        </eunes-progress-bar>
-                                    </div> -->
-                                    <div *ngIf="memo?.description">
-                                        <div fxFlex markdown
-                                        [innerHTML]="memo.description | markdown"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
-            <div class="new-board board-header" fxLayout fxLayoutAlign=" center">
-                <eunes-button
-                type="icon-button"
-                color="blue"
-                [icon]="'add'"
-                [hover]="true"
-                (click)="addBoard()">
-                </eunes-button>
-            </div>
-        </div>
+        <memo-board *ngIf="selectedProject" 
+        [selectProject]="selectProject"></memo-board>
     </div>
 </div>

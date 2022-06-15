@@ -16,6 +16,7 @@ import { EunesDropdownModule } from '@eunes/elements/dropdown';
 import { EunesProgressBarModule } from '@eunes/elements/progress-bar';
 import { MarkdownModule } from 'ngx-markdown';
 
+import { BoardComponent } from './board/board.component';
 import { MemoDialogComponent } from './memo-dialog/memo-dialog.component';
 import { MemoboardComponent } from './memoboard.component';
 import { MemoboardService } from './memoboard.service';
@@ -27,7 +28,8 @@ import { ProjectDialogComponent } from './project-dialog/project-dialog.componen
     declarations: [
         MemoboardComponent,
         MemoDialogComponent,
-        ProjectDialogComponent
+        ProjectDialogComponent,
+        BoardComponent
     ],
     imports: [
         DragDropModule,

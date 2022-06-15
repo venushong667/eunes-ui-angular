@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { Project } from '../constants';
@@ -10,6 +10,8 @@ import { MemoboardService } from '../memoboard.service';
     styleUrls: ['./project-dialog.component.css']
 })
 export class ProjectDialogComponent implements OnInit {
+
+    @Output() createEvent = new EventEmitter<Project>();
 
     constructor(
         public dialogRef: MatDialogRef<ProjectDialogComponent>,
@@ -27,7 +29,8 @@ export class ProjectDialogComponent implements OnInit {
             name: this.name,
             config: {}
         }
-        this._memo.createProject(project).subscribe(() => {
+        this._memo.createProject(project).subscribe((data) => {
+            this.createEvent.emit(data);
             this.dialogRef.close();
         });
     }

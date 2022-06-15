@@ -3,6 +3,6 @@ type="button"
 class="iconButton"
 fxLayout fxLayoutAlign="start center"
 [ngClass]="{'background': background, 'hover': hover }">
-    <mat-icon>{{ icon }}</mat-icon>
+    <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
     <span class="text" *ngIf="text">{{ text }}</span>
 </button>

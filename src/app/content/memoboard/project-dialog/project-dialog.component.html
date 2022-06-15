@@ -1,11 +1,11 @@
 <div fxLayout="column">
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="standard" (keydown.enter)="createProject()">
         <mat-label>Project Name</mat-label>
         <input matInput 
         [(ngModel)]="name"
         placeholder="Name">
     </mat-form-field>
     <div style="margin-left: auto">
-        <button mat-raised-button color="primary" (click)="createProject()">Create</button>
+        <button mat-raised-button color="primary" (click)="createProject()" >Create</button>
     </div>
 </div>
