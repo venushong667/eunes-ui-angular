@@ -1,107 +1,49 @@
-.content-container {
+.kanban-container {
+    height: 100%;
+    width: 100%;
+}
+
+.kanban-header {
+    background-color: white;
+    width: 100%;
     padding: 10px;
-    background: aliceblue;
+    min-height: 40px;
 }
 
-.board {
-    height:700px;
-    width: 300px;
-    background: #3F405E;
-    border: none solid darkslateblue;
-    border-radius: 20px;
+.kanban-header .top-bar mat-icon {
+    color: gray;
 }
 
-.bubble {
-    margin: 5px;
-    padding: 10px 15px;
-    border-radius: 20px;
-    max-width: 70%;
-}
-
-.bubble span {
-    color: white;
-}
-
-.right-bubble {
-    background: #9E82E9;
-    align-self: flex-end;
-}
-
-.left-bubble {
-    background: #47476B;
-    align-self: flex-start;
-}
-
-.top-bar {
-    border-radius: 20px 20px 0px 0px;
-    background:#484863;
-    padding: 10px;
-}
-
-.btm-bar {
-    padding: 5px;
-    height: 50px;
-}
-
-.input-bar {
-    background: #47476B;
-    padding: 0px 10px;
-    height: 40px;
-    width: 75%;
-    border-radius: 20px;
-    border: none;
-    border-color:#9E82E9;
-    box-shadow: 0 0 1pt 1pt #9E82E9;
-}
-
-.input-field:focus {
-    /* outline:#9E82E9 solid 3px;
-    border-radius: 20px; */
+.search-field {
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
+    padding: 0 10px;
     outline: none;
 }
 
-.input-field {
-    background: transparent;
-    border: none;
-    color: white;
+.search-field:focus {
+    border: 2px solid lightgray;
 }
 
-.input-bar mat-icon:hover {
-    cursor: pointer;
-    background: grey;
-    border-radius: 15px;
-    background-size: 28px;
-    background-position: center;
+.project-wrapper {
+    background-color: ghostwhite;
+    padding: 30px;
 }
 
-.input-bar mat-icon:active {
-    background: lightgrey;
-    transition-duration:0.2s;
+.project-top-bar .title {
+    font-size: 20px;
+    font-weight: bold;
 }
 
-.more {
-    color:#9E82E9;
-    margin-left: auto;
+.project-top-bar .description {
+    color: lightslategrey;
+    font-weight: 450;
 }
 
-.send-button {
-    width: 60px;
-    height: 30px;
-    border-radius: 20px;
-    color:white;
-    background:#9E82E9;
-    border: none;
+::ng-deep .project-dialog > mat-dialog-container {
+    box-shadow: 0px 1px 10px lightsteelblue, 0 0 0 1px lightsteelblue;
 }
 
-button:active {
-    transition-duration:0.5s;
-    background:#744ddf;
-}
-
-.clear-button {
-    justify-self: end;
-}
-
-.mat-menu-content {
-    color: #47476B !important;
+eunes-button ::ng-deep .background {
+    background-color: white;
 }

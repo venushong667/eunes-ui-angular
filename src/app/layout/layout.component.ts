@@ -53,9 +53,6 @@ export class LayoutComponent {
     showText: Boolean = false;
 
     constructor() { }
-    
-    // ngOnInit(): void {
-    // }
 
     toggleButtonText(show: Boolean) {
         this.showText = show;

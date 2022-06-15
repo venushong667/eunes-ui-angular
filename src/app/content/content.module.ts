@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { EunesIconButtonModule } from '@eunes/elements/icon-button';
+import { EunesButtonModule } from '@eunes/elements/button';
 
 import { LayoutComponent } from '../layout/layout.component';
 import { ChatModule } from './chat/chat.module';
@@ -22,7 +22,7 @@ import { ContentRoutingModule } from './content-routing.module';
         ContentRoutingModule,
         FormsModule,
         FlexLayoutModule,
-        EunesIconButtonModule,
+        EunesButtonModule,
         ChatModule,
         MatDividerModule,
         MatIconModule,

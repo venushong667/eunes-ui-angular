@@ -1,36 +1,55 @@
-<div class="content-container" fxFill fxLayoutAlign="center center" >
-    <div class="board" fxLayout="column">
-        <div class="top-bar" fxLayout fxFlex="10" fxLayoutAlign=" center">
-            <button class="more" mat-icon-button  [matMenuTriggerFor]="menu">
-                <mat-icon>more_vert</mat-icon>
-            </button>
+<div class="kanban-container" fxLayout="column">
+    <div class="kanban-header" fxLayout="column" fxLayoutGap="10px">
+        <div class="top-bar" fxLayout fxLayoutGap="5px">
+            <eunes-button 
+            [icon]="'arrow_back'"
+            [background]="false">
+            [hover-eff]="false">
+            </eunes-button>
+
+            <!-- <eunes-dropdown></eunes-dropdown> -->
             
-            <mat-menu #menu="matMenu">
-                <ng-template matMenuContent let-name="name">
-                    <button mat-menu-item (click)="clear()">Clear History</button>
-                </ng-template>
-            </mat-menu>
+            <input class="search-field" type="text" placeholder="search">
         </div>
-        <div fxLayout="column" fxFlex="90" fxLayoutAlign="end" style="padding: 10px;">
-            <mat-list fxLayout="column" *ngFor="let msg of messages">
-                <div class="bubble"
-                [ngClass]="{'right-bubble': msg.user === 'me', 'left-bubble': msg.user === 'he'}">
-                    <span>{{ msg.message }}</span>
+    </div>
+    
+    <div class="project-wrapper" *ngIf="selectedProject" fxFlex fxLayout="column" fxLayoutGap="20px">
+        <div class="project-top-bar" fxLayout>
+            <div fxLayout fxLayoutGap="10px" fxLayoutAlign=" center">
+                <div fxLayout="column" fxLayoutGap="10px">
+                    <span class="title">{{ selectedProject.name }}</span>
+                    <!-- <span class="description">Last update - 10 March 2022</span> -->
                 </div>
-            </mat-list>
-            <div class="btm-bar" fxLayout fxLayoutAlign=" center" fxLayoutGap="10px">
-                <div class="input-bar" fxLayout fxLayoutGap="3px" fxLayoutAlign=" center">
-                    <mat-icon style="color:LightGrey">sentiment_satisfied</mat-icon>
-                    <input 
-                    class="input-field" 
-                    fxFlex="80" 
-                    type="text" 
-                    placeholder="Message..." 
-                    (keydown.enter)="send()" 
-                    [(ngModel)]="current_msg">
+                <eunes-button [icon]="'chevron_right'" [matMenuTriggerFor]="projectMenu"></eunes-button>
+                <mat-menu #projectMenu>
+                    <button mat-menu-item (click)="addProject()">
+                        <mat-icon>add</mat-icon> 
+                        <span>Add a new project</span>
+                    </button>
+                    <ng-container *ngFor="let project of allProjects">
+                        <button mat-menu-item (click)="setProject(project)">
+                            <span>{{ project.name }}</span>
+                        </button>
+                    </ng-container>
+                </mat-menu>
+            </div>
+
+            <div class="extra" fxLayout fxLayoutAlign=" center" fxLayoutGap="10px" style="margin-left: auto">
+                <span>members</span>
+                <div style="background: white; height: 100%; width: 100px; border-radius: 10px; padding: 10px">
+                    <mat-icon>circle</mat-icon>
                 </div>
-                <button class="send-button" (click)="send()">Send</button>
+                <eunes-button [icon]="'more_vert'" [matMenuTriggerFor]="projectMore"></eunes-button>
+                <mat-menu #projectMore>
+                    <button mat-menu-item (click)="deleteProject()">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                    </button>
+                </mat-menu>
             </div>
         </div>
+
+        <memo-board *ngIf="selectedProject" 
+        [selectProject]="selectProject"></memo-board>
     </div>
 </div>

@@ -39,7 +39,9 @@
                 "comma-spacing": "off",
                 "@typescript-eslint/comma-spacing": ["warn"],
                 "simple-import-sort/imports": "warn",
-                "simple-import-sort/exports": "warn"
+                "simple-import-sort/exports": "warn",
+                "@angular-eslint/use-lifecycle-interface": ["off"],
+                "@angular-eslint/no-empty-lifecycle-method": ["off"]
             }
         },
         {
