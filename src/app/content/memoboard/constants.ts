@@ -18,6 +18,7 @@ export interface Memo {
     id: string;
     name: string;
     boardId: string;
+    projectId: string;
     description: string;
     position: number;
     config: any;
