@@ -32,7 +32,16 @@ export class BoardComponent implements OnInit {
         }
     }
 
+    @ViewChild('newMemo', { static: false }) 
+    set newMemo(element: ElementRef) {
+        if (element) {
+            element.nativeElement.focus();
+            this._newMemo = element;
+        }
+    }
+
     private _newBoard: ElementRef;
+    private _newMemo: ElementRef;
 
     createMemoEvent: Subject<boolean> = new Subject<boolean>();
     boards: Array<Board> = [];
@@ -101,7 +110,9 @@ export class BoardComponent implements OnInit {
         board.position = this.computePosition(index, this.allBoards);
         this._memo.createBoard(board).pipe(
             takeUntil(this.destroy$)
-        ).subscribe();
+        ).subscribe(data => {
+            extend(board, data);
+        });
     }
 
     deleteBoard(board: Board, index: number) {
@@ -119,6 +130,7 @@ export class BoardComponent implements OnInit {
             const memo: Memo = {
                 id: '',
                 boardId: board.id,
+                projectId: this.selectedProject.id,
                 name: '',
                 description: '',
                 position: 0,

@@ -82,6 +82,7 @@ export class MemoboardService {
         const body = {
             name: memo.name,
             boardId: memo.boardId,
+            projectId: memo.projectId,
             description: memo.description,
             position: memo.position,
             config: memo.config
