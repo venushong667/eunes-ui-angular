@@ -5,5 +5,11 @@
         "pathRewrite": {
             "^/api/memoboard": ""
         }
+    },
+    "/wss": {
+        "target": "http://localhost:5000",
+        "secure": false,
+        "ws": true,
+        "changeOrigin": true
     }
 }
