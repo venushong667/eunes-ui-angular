@@ -6,7 +6,7 @@ import extend from 'lodash-es/extend';
 import filter from 'lodash-es/filter';
 import find from 'lodash-es/find';
 import sortBy from 'lodash-es/sortBy';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { map, mergeMap, takeUntil } from 'rxjs/operators';
 
 import { Board, Memo, Project } from '../constants';
@@ -43,6 +43,8 @@ export class BoardComponent implements OnInit {
     private _newBoard: ElementRef;
     private _newMemo: ElementRef;
 
+    busy: Subscription;
+
     createMemoEvent: Subject<boolean> = new Subject<boolean>();
     boards: Array<Board> = [];
 
@@ -66,7 +68,7 @@ export class BoardComponent implements OnInit {
     }
 
     getAllItems(projectId: string) {
-        this._memo.getBoards(projectId).pipe(
+        this.busy = this._memo.getBoards(projectId).pipe(
             mergeMap((boards) => this._memo.getMemos().pipe(
                 map((memos) => {
                     each(boards, board => {
@@ -115,9 +117,15 @@ export class BoardComponent implements OnInit {
         });
     }
 
+    updateBoard(board: Board) {
+        this._memo.updateBoard(board).subscribe();
+    }
+
     deleteBoard(board: Board, index: number) {
         this.allBoards.splice(index, 1);
-        this._memo.deleteBoard(board.id).subscribe();
+        this._memo.deleteBoard(board.id).pipe(
+            takeUntil(this.destroy$)
+        ).subscribe();
     }
 
     removeLatestBoard() {

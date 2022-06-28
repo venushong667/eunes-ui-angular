@@ -27,8 +27,12 @@ export class MemoboardService {
         return this._http.post<Project>('/api/memoboard/project', body);
     }
 
-    updateProject = (id: string, config: Object): Observable<Object> => {
-        return this._http.put<Object>(`/api/memoboard/project/${id}`, config);
+    updateProject = (project: Project): Observable<Object> => {
+        const body = {
+            name: project.name,
+            config: project.config
+        }
+        return this._http.put<Object>(`/api/memoboard/project/${project.id}`, body);
     }
 
     deleteProject = (id: string) => {

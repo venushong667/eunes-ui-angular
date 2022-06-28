@@ -15,9 +15,23 @@
     padding: 0 15px;
 }
 
-.board-header eunes-button ::ng-deep .background {
-    background: aliceblue;
+.board-header textarea {
+    font-weight: bold;
+    cursor: pointer;
 }
+
+.board-header textarea::-webkit-input-placeholder {
+    font-weight: 400;
+}
+
+.board-header textarea:focus {
+    outline: 2px solid lightsteelblue;
+    border-radius: 5px;
+}
+
+/* .board-header eunes-button ::ng-deep .background {
+    background: aliceblue;
+} */
 
 .board-top-bar {
     padding: 10px 10px 0px 10px;

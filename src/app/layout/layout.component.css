@@ -81,6 +81,7 @@
     visibility: hidden;
     white-space: nowrap;
     transition: opacity 0.5s, visibility 0.5s;
+    font-weight: 500;
 }
 
 .navigation:hover .text {
