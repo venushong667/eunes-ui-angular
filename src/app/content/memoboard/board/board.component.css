@@ -56,6 +56,10 @@
     font-weight: bold;
 }
 
+.memo-content {
+    max-height: 200px;
+    overflow: hidden;
+}
 
 eunes-button ::ng-deep .background {
     background-color: white;
