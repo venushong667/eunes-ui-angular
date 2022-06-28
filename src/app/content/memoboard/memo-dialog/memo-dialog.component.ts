@@ -1,4 +1,4 @@
-import { Component, Inject, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Inject, Renderer2 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -83,6 +83,13 @@ export class MemoDialogComponent {
         this._memoboard.updateMemo(this.memo).pipe(
             take(1)
         ).subscribe();
+    }
+    
+    resizeText(desc: any) {
+        if (desc.scrollHeight < 300) {
+            desc.style.height = '1px';
+            desc.style.height = desc.scrollHeight+'px';
+        } 
     }
 
     closeDialog() {

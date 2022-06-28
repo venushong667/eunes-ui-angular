@@ -47,3 +47,7 @@
 eunes-button ::ng-deep .background {
     background-color: white;
 }
+
+::ng-deep [markdown] ul {
+    list-style: disc inside;
+}

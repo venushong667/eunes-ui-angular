@@ -18,6 +18,7 @@
             <div class="hide-on-edit" *ngIf="memo.description" markdown
             [innerHTML]="memo.description | markdown"></div>
             <textarea #desc 
+                [style.height]="resizeText(desc)"
                 data-autosize="true" 
                 spellcheck="false"
                 [(ngModel)]="memo.description"
