@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, Renderer2 } from '@angular/core';
+import { Component, Inject, Renderer2 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
