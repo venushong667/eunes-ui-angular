@@ -14,6 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EunesButtonModule } from '@eunes/elements/button';
 import { EunesDropdownModule } from '@eunes/elements/dropdown';
 import { EunesProgressBarModule } from '@eunes/elements/progress-bar';
+import { NgBusyModule } from 'ng-busy';
 import { MarkdownModule } from 'ngx-markdown';
 
 import { BoardComponent } from './board/board.component';
@@ -48,6 +49,7 @@ import { ProjectDialogComponent } from './project-dialog/project-dialog.componen
         EunesButtonModule,
         EunesProgressBarModule,
         EunesDropdownModule,
+        NgBusyModule,
         MemoboardRoutingModule,
     ],
     providers: [MemoboardService]

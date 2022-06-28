@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Subscription } from 'rxjs';
 
 import { Project } from './constants';
 import { MemoboardService } from './memoboard.service';
@@ -12,6 +12,8 @@ import { ProjectDialogComponent } from './project-dialog/project-dialog.componen
     styleUrls: ['./memoboard.component.css']
 })
 export class MemoboardComponent {
+
+    busy: Subscription;
 
     selectedProject: Project;
     editing = false;
@@ -36,7 +38,7 @@ export class MemoboardComponent {
     }
 
     getProjects() {
-        this._memo.getProjects().subscribe((data) => {
+        this.busy = this._memo.getProjects().subscribe((data) => {
             this.allProjects = data;
             this.setProject(this.allProjects[0]);
         });
@@ -61,6 +63,10 @@ export class MemoboardComponent {
                 sub.unsubscribe();
             });
         });
+    }
+
+    updateProject(project: Project) {
+        this._memo.updateProject(project).subscribe();
     }
     
     deleteProject() {
