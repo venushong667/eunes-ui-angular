@@ -1,0 +1,53 @@
+<div fxLayout="column" fxLayoutGap="5px">
+
+    <ng-container *ngIf="active">
+        <div class="box" fxLayout="column">
+            <div class="top-bar" fxLayout fxLayoutAlign=" center">
+                <button class="more" mat-icon-button  [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                
+                <mat-menu #menu="matMenu">
+                    <ng-template matMenuContent let-name="name">
+                        <button mat-menu-item (click)="clear()">Clear History</button>
+                    </ng-template>
+                </mat-menu>
+            </div>
+
+            <div #box class="messages-wrapper" fxLayout="column" style="padding: 10px;" [scrollTop]="initialized && box.scrollHeight">
+                <ng-container *ngFor="let msg of messages">
+                    <div class="bubble"
+                    [ngClass]="{'right-bubble': msg.user === 'me', 'left-bubble': msg.user === 'other'}">
+                        <ng-container *ngIf="msg.message?.text">
+                            <div markdown>{{ msg.message.text }}</div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+                <!-- <div class="typing-indicator">
+                    <div class="dotblock">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="btm-bar" fxLayout fxLayoutAlign=" center" fxLayoutGap="10px">
+                <div class="input-bar" fxLayout fxFlex fxLayoutGap="3px" fxLayoutAlign=" center">
+                    <mat-icon style="color:LightGrey">sentiment_satisfied</mat-icon>
+                    <input 
+                    class="input-field" 
+                    fxFlex="80" 
+                    type="text" 
+                    placeholder="Message..." 
+                    (keydown.enter)="send()" 
+                    [(ngModel)]="current_msg">
+                </div>
+                <button mat-icon-button class="send-button" (click)="send()"><mat-icon>send</mat-icon></button>
+            </div>
+        </div>
+    </ng-container>
+    <button mat-fab fxFlexAlign="end" style="background-color: lightsteelblue;" (click)="toggleChat()">
+        <mat-icon>chat</mat-icon>
+    </button> 
+</div>

@@ -1,0 +1,170 @@
+.box {
+    height: 600px;
+    width: 350px;
+    background: white;
+    /* border: none solid darkslateblue; */
+    border-radius: 20px;
+    box-shadow: 0px 1px 5px lightsteelblue;
+}
+
+.top-bar {
+    border-radius: 20px 20px 0px 0px;
+    background: white;
+    padding: 10px;
+
+    .more {
+        margin-left: auto;
+    }
+    
+}
+
+.messages-wrapper {
+    background-color: #f9fafc;
+    overflow-x: visible;
+    overflow-y: auto;
+    height: 100%;
+
+    .bubble {
+        margin: 5px;
+        padding: 10px 15px;
+        max-width: 70%;
+    }
+    
+    .right-bubble {
+        background: white;
+        align-self: flex-end;
+        border-radius: 15px;
+        border-top-right-radius: 0px;
+        box-shadow: 1px 5px 10px aliceblue;
+    }
+    
+    .left-bubble {
+        background: whitesmoke;
+        align-self: flex-start;
+        border-radius: 15px;
+        border-top-left-radius: 0px;
+        box-shadow: -1px 5px 10px white;
+    }
+    
+}
+
+.btm-bar {
+    padding: 10px;
+}
+
+.input-bar {
+    background: whitesmoke;
+    padding: 0px 10px;
+    height: 40px;
+    width: 75%;
+    border-radius: 20px;
+    border: none;
+
+    &:focus-within {
+        box-shadow: 0 0 1pt 1pt lightsteelblue;
+    }
+
+    mat-icon {
+        &:hover {
+            cursor: pointer;
+            background: grey;
+            border-radius: 15px;
+            background-size: 28px;
+            background-position: center;
+        }
+
+        &::active {
+            background: lightgrey;
+            transition-duration:0.2s;
+        }
+    }
+}
+
+.input-field {
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.send-button {
+    color: lightsteelblue;
+}
+
+button:active {
+    transition-duration:0.5s;
+    background:#744ddf;
+}
+
+.clear-button {
+    justify-self: end;
+}
+
+.mat-menu-content {
+    color: #47476B !important;
+}
+
+::ng-deep [markdown] {
+    p {
+        margin: 0
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-tracker {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: lightgray;
+    border-radius: 10px;
+
+    &:hover {
+        background: #9b9b9b;
+    }
+}
+
+.dotblock {
+    align-items: center;
+    display: flex;
+    height: 17px;
+}
+
+.typing-indicator .dot {
+    background-color: LightSteelBlue;
+}
+
+.dot {
+    animation: typingAnimation 1.5s infinite ease-in-out;
+    border-radius: 100%;
+    display: inline-block;
+    height: 8px;
+    margin: 2px;
+    width: 8px;
+}
+
+@keyframes typingAnimation{
+    0%{
+        -webkit-transform:translateY(0px)
+    }
+    28%{
+        -webkit-transform:translateY(-5px)
+    }
+    44%{
+        -webkit-transform:translateY(0px)
+    }
+}
+
+.dot:nth-child(1){
+    animation-delay:200ms;
+}
+.dot:nth-child(2){
+    animation-delay:300ms;
+}
+.dot:nth-child(3){
+    animation-delay:400ms;
+}
