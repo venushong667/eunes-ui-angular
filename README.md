@@ -1,6 +1,6 @@
 # In progress
 
-![Demo](https://imgur.com/w6RfG4k.gif)
+![Demo](https://imgur.com/K8E1gT9.gif)
 
 ## Eunes Platform
 
