@@ -1,6 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { EunesWebSocketService } from '@eunes/services/websocket/websocket.component';
 import each from 'lodash-es/each';
 import extend from 'lodash-es/extend';
 import filter from 'lodash-es/filter';
@@ -23,6 +24,7 @@ export class BoardComponent implements OnInit {
     @Input() selectProject: ReplaySubject<Project>;
 
     selectedProject: Project;
+    EXCHANGE = 'memoboard.actions'
 
     @ViewChild('newBoard', { static: false }) 
     set newBoard(element: ElementRef) {
@@ -57,7 +59,8 @@ export class BoardComponent implements OnInit {
 
     constructor(
         private _memo: MemoboardService,
-        private _dialog: MatDialog
+        private _dialog: MatDialog,
+        private _ws: EunesWebSocketService
     ) { }
 
     ngOnInit() {
@@ -65,7 +68,24 @@ export class BoardComponent implements OnInit {
             this.getAllItems(project.id);
             this.selectedProject = project;
         });
+        this.createMemoListener();
     }
+
+    createMemoListener() {
+        this._ws.subscribeTopic(this.EXCHANGE, 'memoboard.create').subscribe((data) => {
+            let memo = data.message;
+            console.log(this.allMemos)
+            if (!find(this.allMemos, { id: memo.id })) {
+                this.addMemo(memo.boardId, memo);
+            }
+        });
+    }
+
+    // deleteMemoListener() {
+    //     this._ws.subscribeTopic(this.EXCHANGE, 'memoboard.delete').subscribe((data) => {
+    //         this.allMemos.filter()
+    //     });
+    // }
 
     getAllItems(projectId: string) {
         this.busy = this._memo.getBoards(projectId).pipe(
@@ -74,13 +94,14 @@ export class BoardComponent implements OnInit {
                     each(boards, board => {
                         board.memos = sortBy(filter(memos, { 'boardId': board.id }), ['position']);
                     })
+                    this.allMemos = memos;
                     return boards;
                 })
             ))
         ).pipe(
             takeUntil(this.destroy$)
         ).subscribe(data => {
-            this.allBoards = sortBy(data, ['position']);;
+            this.allBoards = sortBy(data, ['position']);
         });
     }
 
@@ -132,19 +153,19 @@ export class BoardComponent implements OnInit {
         this.allBoards.pop();
     }
 
-    addMemo(board: Board) {
-        let brd = find(this.allBoards, {id: board.id});
+    addMemo(boardId: string, memo?: Memo) {
+        let brd = find(this.allBoards, {id: boardId});
         if (brd) {
-            const memo: Memo = {
+            const newMemo: Memo = memo || {
                 id: '',
-                boardId: board.id,
+                boardId: boardId,
                 projectId: this.selectedProject.id,
                 name: '',
                 description: '',
                 position: 0,
                 config: {}
             }
-            brd.memos.unshift(memo);
+            brd.memos.unshift(newMemo);
         }
     }
 
@@ -203,6 +224,7 @@ export class BoardComponent implements OnInit {
             takeUntil(this.destroy$)
         ).subscribe((data: Memo) => {
             extend(memo, data);
+            this.allMemos.push(data);
         });
     }
 

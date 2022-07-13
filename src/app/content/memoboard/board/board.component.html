@@ -13,8 +13,8 @@ cdkDropListOrientation="horizontal"
                 <div class="board-top-bar">
                     <div class="board-header" fxLayout fxLayoutAlign=" center">
                         <!-- <span fxFlex style="font-weight: bold;" (dblclick)="toggleEdit(board)">{{ board.name }}</span> -->
-                        <ng-container #title *ngIf="board.name">
-                            <textarea fxFlex 
+                        <ng-container *ngIf="board.name">
+                            <textarea #title fxFlex 
                             rows="1"
                             spellcheck="false"
                             placeholder="Enter a title for this board"
@@ -29,7 +29,7 @@ cdkDropListOrientation="horizontal"
                             color="blue"
                             [icon]="'add'"
                             [hover]="false"
-                            (click)="addMemo(board)">
+                            (click)="addMemo(board.id)">
                             </eunes-button>
 
                             <eunes-button

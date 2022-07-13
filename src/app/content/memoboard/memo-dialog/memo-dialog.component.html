@@ -23,7 +23,8 @@
                 spellcheck="false"
                 [(ngModel)]="memo.description"
                 [ngModelOptions]="{updateOn: 'blur'}"
-                (blur)="memo.description.length > 0 ? exitEdit(): desc.focus()">
+                (blur)="memo.description.length > 0 ? exitEdit(): desc.focus()"
+                (keydown)="submitDescription($event, desc)">
             </textarea>
             <textarea class="no-text" 
                 spellcheck="false"

@@ -96,4 +96,10 @@ export class MemoDialogComponent {
         this.dialogRef.close();
     }
 
+    submitDescription(event: KeyboardEvent, textarea: HTMLTextAreaElement) {
+        if (event.ctrlKey && event.key == 'Enter') {
+            textarea.blur();
+        }
+    }
+
 }
