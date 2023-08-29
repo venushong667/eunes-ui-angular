@@ -1,4 +1,4 @@
-# In progress
+# Deprecated (Moving on to Svelte)
 
 ![Demo](https://imgur.com/K8E1gT9.gif)
 
